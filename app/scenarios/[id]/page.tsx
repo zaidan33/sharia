@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
-import { Pencil } from "lucide-react";
+import { Pencil, FileText } from "lucide-react";
 import { getSessionUserId, getScenarioOwned } from "@/lib/queries";
 import { dbRowToScenarioInput } from "@/lib/mappers";
 import { computeScenario } from "@/lib/engine";
@@ -51,6 +51,11 @@ export default async function ScenarioDetailPage({
           </p>
         </div>
         <div className="flex gap-2">
+          <Button asChild variant="outline" size="sm">
+            <Link href={`/scenarios/${row.id}/report`}>
+              <FileText className="size-4" /> Laporan PDF
+            </Link>
+          </Button>
           <Button asChild variant="outline" size="sm">
             <Link href={`/scenarios/${row.id}/edit`}>
               <Pencil className="size-4" /> Ubah
