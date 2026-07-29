@@ -29,7 +29,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { StatusBadge } from "@/components/scenario/status-badge";
-import { formatPersen, formatRasio, formatRupiah, formatRupiahCompact } from "@/lib/format";
+import { formatPersen, formatRasio, formatRupiahCompact } from "@/lib/format";
 
 type Values = Record<string, string>;
 

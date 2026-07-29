@@ -70,9 +70,10 @@ export function ImportPanel({
       {open && (
         <div className="space-y-2 border-t border-border px-4 py-3">
           <p className="text-xs text-slate">
-            Tempel ringkasan pengajuan/usaha (mis. "Plafon 75 juta, tenor 18
-            bulan, murabahah, marja 7%"). Field yang dikenali akan mengisi form
-            - Anda tetap bisa mengubahnya.
+            Tempel ringkasan pengajuan/usaha (mis.{' '}
+            <span className="font-mono">Plafon 75 juta, tenor 18 bulan, murabahah, marja 7%</span>
+            ). Field yang dikenali akan mengisi form - Anda tetap bisa
+            mengubahnya.
           </p>
           <Textarea
             value={text}

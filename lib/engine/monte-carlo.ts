@@ -78,7 +78,7 @@ function makeNormal(
   if (sigma <= 0) return () => mu;
   return () => {
     let u = rng();
-    let v = rng();
+    const v = rng();
     if (u < 1e-12) u = 1e-12; // hindari log(0)
     const z = Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
     return mu + sigma * z;
