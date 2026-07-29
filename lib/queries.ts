@@ -28,6 +28,12 @@ export async function getSessionUserId(): Promise<string | null> {
   return session?.user.id ?? null;
 }
 
+/** Pengguna dari sesi (id, email, name), atau null bila tidak terotentikasi. */
+export async function getSessionUser() {
+  const session = await auth.api.getSession({ headers: await headers() });
+  return session?.user ?? null;
+}
+
 export async function listScenariosForUser(
   userId: string,
 ): Promise<ScenarioSummary[]> {
