@@ -8,6 +8,7 @@ import { MetricCard } from "@/components/scenario/metric-card";
 import { CashflowChart } from "@/components/scenario/cashflow-chart";
 import { DscrChart } from "@/components/scenario/dscr-chart";
 import { CashflowTable } from "@/components/scenario/cashflow-table";
+import { TerminalValueCard } from "@/components/scenario/terminal-value-card";
 import { recomputeScenario } from "@/lib/actions/scenario-actions";
 import type { ScenarioComputation, ScenarioInput, Variant } from "@/lib/engine";
 import { formatPersen, formatRasio, formatRupiah, formatRupiahCompact } from "@/lib/format";
@@ -153,6 +154,8 @@ export function ScenarioResults({
           <CashflowTable cashflow={v.cashflow} dscr={v.dscr} />
         </Card>
       </div>
+
+      <TerminalValueCard input={input} computation={computation} />
 
       {/* Slider discount rate */}
       <Card className="space-y-3 p-4">

@@ -18,9 +18,22 @@ import {
   calculateBreakEvenOmzet,
   type BreakEvenResult,
 } from "./ratios";
-import { calculateNPV, calculateIRR, type IRRResult } from "./valuation";
+import {
+  calculateNPV,
+  calculateIRR,
+  calculateTerminalValue,
+  type IRRResult,
+  type TerminalValueResult,
+} from "./valuation";
 
-export type { Variant, CashflowPeriod, FinancingSchedule, BreakEvenResult, IRRResult };
+export type {
+  Variant,
+  CashflowPeriod,
+  FinancingSchedule,
+  BreakEvenResult,
+  IRRResult,
+  TerminalValueResult,
+};
 
 /** Bentuk masukan computeScenario - berkorespondensi dengan Zod schema (Fase 3). */
 export interface ScenarioInput {
@@ -47,6 +60,7 @@ export interface ScenarioInput {
   deltaPendapatanBulanan: number;
   deltaOpexBulanan: number;
   discountRateTahunan: number; // persen
+  pertumbuhanTerminalTahunan?: number | null; // persen g (V2.3); null/undefined = tanpa terminal value
 }
 
 export interface VariantResult {
@@ -66,6 +80,8 @@ export interface ScenarioComputation {
   der: number | null;
   roiTahunanPersen: number;
   breakEven: BreakEvenResult;
+  terminalValue: TerminalValueResult;
+  npvWithTerminal: number; // NPV inkremental + PV terminal value
   status: StatusKelayakan;
 }
 
@@ -142,12 +158,22 @@ export function computeScenario(input: ScenarioInput): ScenarioComputation {
     schedule.angsuran[0] ?? 0,
   );
 
+  const terminalValue = calculateTerminalValue(
+    varian.base.cashflow,
+    input.discountRateTahunan,
+    input.pertumbuhanTerminalTahunan,
+  );
+  const npvWithTerminal =
+    varian.base.npv + (terminalValue.pvTerminal ?? 0);
+
   return {
     schedule,
     varian,
     der,
     roiTahunanPersen,
     breakEven,
+    terminalValue,
+    npvWithTerminal,
     status: determineStatus(varian.base),
   };
 }

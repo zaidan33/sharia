@@ -87,6 +87,11 @@ export const scenarios = pgTable(
     })
       .notNull()
       .default("12"),
+    // V2.3: pertumbuhan terminal (g) untuk terminal value; null = nonaktif.
+    pertumbuhanTerminalTahunan: numeric("pertumbuhan_terminal_tahunan", {
+      precision: 6,
+      scale: 3,
+    }),
 
     createdAt: timestamp("created_at", { withTimezone: true })
       .defaultNow()

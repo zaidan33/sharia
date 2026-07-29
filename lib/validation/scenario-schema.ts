@@ -32,6 +32,8 @@ export const scenarioInputSchema = z
     deltaPendapatanBulanan: z.number().int().min(0),
     deltaOpexBulanan: z.number().int().min(0),
     discountRateTahunan: z.number().min(0).max(40),
+    // V2.3: pertumbuhan terminal (g). nullish = opsional & boleh null (nonaktif).
+    pertumbuhanTerminalTahunan: z.number().min(0).max(40).nullish(),
   })
   .refine(
     (v) => (v.jenisSkema === "konvensional" ? v.jenisAkad === null : v.jenisAkad !== null),

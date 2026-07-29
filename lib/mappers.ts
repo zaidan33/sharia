@@ -30,6 +30,10 @@ export function dbRowToScenarioInput(row: ScenarioRow): ScenarioInput {
     deltaPendapatanBulanan: row.deltaPendapatanBulanan,
     deltaOpexBulanan: row.deltaOpexBulanan,
     discountRateTahunan: Number(row.discountRateTahunan),
+    pertumbuhanTerminalTahunan:
+      row.pertumbuhanTerminalTahunan === null
+        ? null
+        : Number(row.pertumbuhanTerminalTahunan),
   };
 }
 
@@ -59,6 +63,10 @@ export function scenarioInputToFields(data: ScenarioInput) {
     deltaPendapatanBulanan: data.deltaPendapatanBulanan,
     deltaOpexBulanan: data.deltaOpexBulanan,
     discountRateTahunan: String(data.discountRateTahunan),
+    pertumbuhanTerminalTahunan:
+      data.pertumbuhanTerminalTahunan == null
+        ? null
+        : String(data.pertumbuhanTerminalTahunan),
   };
 }
 

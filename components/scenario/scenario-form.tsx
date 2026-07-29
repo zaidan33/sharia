@@ -60,7 +60,7 @@ const STEP_FIELDS: (keyof ScenarioInput)[][] = [
     "ekuitasAwal",
     "kewajibanLain",
   ],
-  ["deltaPendapatanBulanan", "deltaOpexBulanan", "discountRateTahunan"],
+  ["deltaPendapatanBulanan", "deltaOpexBulanan", "discountRateTahunan", "pertumbuhanTerminalTahunan"],
 ];
 
 function toInt(s: string | undefined): number {
@@ -100,6 +100,10 @@ function buildPayload(v: FormValues): ScenarioInput {
     deltaPendapatanBulanan: toInt(v.deltaPendapatanBulanan),
     deltaOpexBulanan: toInt(v.deltaOpexBulanan),
     discountRateTahunan: toDec(v.discountRateTahunan),
+    // V2.3: kosong = nonaktif (null). Dipakai untuk terminal value Gordon.
+    pertumbuhanTerminalTahunan: String(v.pertumbuhanTerminalTahunan ?? "").trim()
+      ? toDec(v.pertumbuhanTerminalTahunan)
+      : null,
   };
 }
 
@@ -134,6 +138,7 @@ function createDefaults(): FormValues {
     deltaPendapatanBulanan: "",
     deltaOpexBulanan: "",
     discountRateTahunan: "12",
+    pertumbuhanTerminalTahunan: "",
   };
 }
 
@@ -159,6 +164,10 @@ function initialToDefaults(initial: ScenarioInput): FormValues {
     deltaPendapatanBulanan: String(initial.deltaPendapatanBulanan),
     deltaOpexBulanan: String(initial.deltaOpexBulanan),
     discountRateTahunan: String(initial.discountRateTahunan),
+    pertumbuhanTerminalTahunan:
+      initial.pertumbuhanTerminalTahunan == null
+        ? ""
+        : String(initial.pertumbuhanTerminalTahunan),
   };
 }
 
@@ -320,6 +329,7 @@ export function ScenarioForm({
               <TextField name="deltaPendapatanBulanan" label="Tambahan pendapatan bulanan" error={err("deltaPendapatanBulanan")} register={register} inputMode="numeric" placeholder="7000000" />
               <TextField name="deltaOpexBulanan" label="Tambahan opex bulanan" hint="Harus lebih kecil dari tambahan pendapatan" error={err("deltaOpexBulanan")} register={register} inputMode="numeric" placeholder="2000000" />
               <TextField name="discountRateTahunan" label="Discount rate / tahun" hint="0 - 40%, bawaan 12%" error={err("discountRateTahunan")} register={register} inputMode="decimal" placeholder="12" />
+              <TextField name="pertumbuhanTerminalTahunan" label="Pertumbuhan terminal / tahun (opsional)" hint="Kosongkan untuk menonaktifkan. Nilai residu Gordon: g < discount rate" error={err("pertumbuhanTerminalTahunan")} register={register} inputMode="decimal" placeholder="3" />
             </div>
           </>
         )}

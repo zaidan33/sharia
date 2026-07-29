@@ -48,3 +48,38 @@ export function calculateIRR(
   if (monthly === null) return { irrTahunanPersen: null, unik };
   return { irrTahunanPersen: effectiveAnnualFromMonthly(monthly), unik };
 }
+
+export interface TerminalValueResult {
+  terminalValue: number | null; // nilai terminal pada akhir horizon (Gordon)
+  pvTerminal: number | null; // PV dari terminal value
+  pertumbuhanTerminal: number | null; // g (fraction) yang dipakai; null = tidak diaktifkan
+}
+
+/**
+ * Terminal value (V2.3) - Gordon growth:
+ *   CF tahun terakhir = run-rate arus kas inkremental 12 bulan terakhir (dijahunkan)
+ *   TV = CF tahun terakhir × (1 + g) / (r - g)   pada akhir horizon
+ *   PV(TV) = TV / (1 + r)^(n/12)
+ * Mengembalikan null bila g tidak diisi atau g >= r (Gordon tak terdefinisi).
+ */
+export function calculateTerminalValue(
+  cashflow: CashflowPeriod[],
+  discountRateTahunan: number,
+  pertumbuhanTerminalTahunan: number | null | undefined,
+): TerminalValueResult {
+  if (pertumbuhanTerminalTahunan === null || pertumbuhanTerminalTahunan === undefined) {
+    return { terminalValue: null, pvTerminal: null, pertumbuhanTerminal: null };
+  }
+  const g = pertumbuhanTerminalTahunan / 100;
+  const r = discountRateTahunan / 100;
+  if (r - g <= 0) {
+    return { terminalValue: null, pvTerminal: null, pertumbuhanTerminal: g };
+  }
+  const last12 = cashflow.slice(-12);
+  const sumLast = last12.reduce((a, p) => a + p.arusKasInkremental, 0);
+  const cfLastYear = (sumLast * 12) / last12.length;
+  const tv = (cfLastYear * (1 + g)) / (r - g);
+  const nYears = cashflow.length / 12;
+  const pv = tv / Math.pow(1 + r, nYears);
+  return { terminalValue: tv, pvTerminal: pv, pertumbuhanTerminal: g };
+}
