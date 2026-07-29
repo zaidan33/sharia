@@ -8,7 +8,7 @@ export function ComparisonVisual() {
   return (
     <div className="space-y-4">
       <div className="grid gap-4 sm:grid-cols-2">
-        <Card className="border-amber/40 bg-amber/[0.06] p-5">
+        <Card className="shadow-premium border-amber/30 bg-white/70 p-5 backdrop-blur-sm">
           <p className="text-xs font-medium uppercase tracking-wide text-amber-deep">
             Murabahah
           </p>
@@ -22,7 +22,7 @@ export function ComparisonVisual() {
           </div>
         </Card>
 
-        <Card className="border-feasible/40 bg-feasible/[0.06] p-5">
+        <Card className="shadow-premium border-feasible/30 bg-white/70 p-5 backdrop-blur-sm">
           <p className="text-xs font-medium uppercase tracking-wide text-feasible">
             Anuitas konvensional
           </p>
