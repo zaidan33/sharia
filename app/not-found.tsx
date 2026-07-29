@@ -1,0 +1,19 @@
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+
+export default function NotFound() {
+  return (
+    <div className="flex min-h-screen flex-col items-center justify-center gap-3 bg-background px-4 text-center">
+      <h1 className="font-display text-2xl font-semibold text-ink">
+        Halaman tidak ditemukan
+      </h1>
+      <p className="max-w-md text-sm text-slate">
+        Halaman yang Anda cari tidak ada, atau skenario tersebut milik pengguna
+        lain.
+      </p>
+      <Button asChild>
+        <Link href="/dashboard">Kembali ke dashboard</Link>
+      </Button>
+    </div>
+  );
+}

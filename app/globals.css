@@ -6,9 +6,12 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-parkinsans: var(--font-parkinsans);
+  --font-display: var(--font-poppins);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-jetbrains-mono);
+  /* alias kompat: komponen boilerplate lama masih memakai kelas font-parkinsans,
+     akan diganti saat sidebar/landing direbuild di Fase 4/7. */
+  --font-parkinsans: var(--font-poppins);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -44,39 +47,58 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
+/* Token merek - PRD §12.1 / IMPLEMENTATION_PLAN §10.
+   Dipakai lewat utility Tailwind, mis. bg-deepteal, text-feasible, border-amber.
+   --color-amber hanya untuk elemen non-teks / >= 24px; untuk teks amber di atas
+   latar terang pakai --color-amber-deep (kontras AA, PRD §12.1). */
+@theme {
+  --color-deepteal: #0B4F4A;
+  --color-amber: #C1892E;
+  --color-amber-deep: #8A5F16;
+  --color-ivory: #FAF7EF;
+  --color-ink: #14201F;
+  --color-slate: #5B6472;
+  --color-feasible: #3F7C58;
+  --color-watch: #8A6D1F;
+  --color-risky: #B5533C;
+
+  --radius-card: 8px;
+  --radius-control: 6px;
+}
+
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.129 0.042 264.695);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.129 0.042 264.695);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.208 0.042 265.755);
-  --primary-foreground: oklch(0.984 0.003 247.858);
-  --secondary: oklch(0.968 0.007 247.896);
-  --secondary-foreground: oklch(0.208 0.042 265.755);
-  --muted: oklch(0.968 0.007 247.896);
-  --muted-foreground: oklch(0.554 0.046 257.417);
-  --accent: oklch(0.968 0.007 247.896);
-  --accent-foreground: oklch(0.208 0.042 265.755);
+  --background: var(--color-ivory);
+  --foreground: var(--color-ink);
+  --card: #FFFFFF;
+  --card-foreground: var(--color-ink);
+  --popover: #FFFFFF;
+  --popover-foreground: var(--color-ink);
+  --primary: var(--color-deepteal);
+  --primary-foreground: var(--color-ivory);
+  --secondary: #EFEAE0;
+  --secondary-foreground: var(--color-deepteal);
+  --muted: #F1ECE2;
+  --muted-foreground: var(--color-slate);
+  --accent: #EFEAE0;
+  --accent-foreground: var(--color-deepteal);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.929 0.013 255.508);
-  --input: oklch(0.929 0.013 255.508);
-  --ring: oklch(0.704 0.04 256.788);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.984 0.003 247.858);
-  --sidebar-foreground: oklch(0.129 0.042 264.695);
-  --sidebar-primary: oklch(0.208 0.042 265.755);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.968 0.007 247.896);
-  --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
-  --sidebar-border: oklch(0.929 0.013 255.508);
-  --sidebar-ring: oklch(0.704 0.04 256.788);
+  --border: #E2DCCC;
+  --input: #E2DCCC;
+  --ring: var(--color-deepteal);
+  --chart-1: var(--color-deepteal);
+  --chart-2: var(--color-amber);
+  --chart-3: var(--color-feasible);
+  --chart-4: var(--color-watch);
+  --chart-5: var(--color-risky);
+  --sidebar: var(--color-ivory);
+  --sidebar-foreground: var(--color-ink);
+  --sidebar-primary: var(--color-deepteal);
+  --sidebar-primary-foreground: var(--color-ivory);
+  --sidebar-accent: #EFEAE0;
+  --sidebar-accent-foreground: var(--color-deepteal);
+  --sidebar-border: #E2DCCC;
+  --sidebar-ring: var(--color-deepteal);
 }
 
 .dark {
@@ -119,5 +141,12 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   }
+}
+
+/* Angka finansial: font mono + tabular figures agar kolom sejajar (PRD §12.3). */
+.num {
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
 }
