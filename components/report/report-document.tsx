@@ -221,7 +221,7 @@ function TornadoChart({ data }: { data: ReportData["sensitivitas"] }) {
 
 export function ReportDocument({ data }: { data: ReportData }) {
   return (
-    <Document title={`Laporan Kelayakan - ${data.nama}`} author="Lihtr UNAIR">
+    <Document title={`Laporan Kelayakan - ${data.nama}`} author="Analisis Kelayakan Pembiayaan">
       <Page size="A4" style={styles.page}>
         {/* Header (halaman 1) */}
         <View style={styles.header}>
@@ -230,7 +230,7 @@ export function ReportDocument({ data }: { data: ReportData }) {
           </View>
           <View>
             <Text style={styles.headerTitle}>Laporan Analisis Kelayakan Pembiayaan</Text>
-            <Text style={styles.headerSub}>Lihtr UNAIR - Laboratorium Penilaian Pembiayaan Syariah</Text>
+            <Text style={styles.headerSub}>Analisis kelayakan pembiayaan syariah &amp; konvensional</Text>
           </View>
           <View style={styles.headerRight}>
             <Text style={[styles.statusBadge, { backgroundColor: TONE[data.statusTone] }]}>
@@ -341,7 +341,7 @@ export function ReportDocument({ data }: { data: ReportData }) {
 
         {/* Footer tiap halaman */}
         <View style={styles.footer} fixed>
-          <Text>Lihtr UNAIR - Laporan Analisis Kelayakan Pembiayaan</Text>
+          <Text>Laporan Analisis Kelayakan Pembiayaan</Text>
           <Text
             render={({ pageNumber, totalPages }) =>
               `Halaman ${pageNumber} dari ${totalPages}`
