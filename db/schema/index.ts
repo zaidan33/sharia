@@ -3,3 +3,4 @@ export * from "./auth";
 export * from "./scenarios";
 export * from "./scenario-results";
 export * from "./sensitivity-results";
+export * from "./monte-carlo-results";

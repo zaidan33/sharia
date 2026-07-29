@@ -10,6 +10,7 @@ import { DeleteScenarioDialog } from "@/components/scenario/delete-scenario-dial
 import { ScenarioResults } from "@/components/scenario/scenario-results";
 import { ModelCaveats } from "@/components/scenario/model-caveats";
 import { SensitivityPanel } from "@/components/scenario/sensitivity-panel";
+import { MonteCarloPanel } from "@/components/scenario/monte-carlo-panel";
 import { JENIS_AKAD_LABEL, PROFIL_RISIKO_LABEL } from "@/lib/constants";
 
 export default async function ScenarioDetailPage({
@@ -62,6 +63,8 @@ export default async function ScenarioDetailPage({
       />
 
       <SensitivityPanel scenarioId={row.id} />
+
+      <MonteCarloPanel scenarioId={row.id} />
 
       <ModelCaveats />
     </div>
