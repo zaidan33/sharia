@@ -60,3 +60,43 @@ export async function getScenarioOwned(id: number, userId: string) {
     .limit(1);
   return row ?? null;
 }
+
+/** Skenario + seluruh metrik tersimpan, untuk Komparator (V2.2). */
+export interface ScenarioForCompare {
+  id: number;
+  nama: string;
+  jenisSkema: "syariah" | "konvensional";
+  jenisAkad: "murabahah" | "ijarah" | "musyarakah_mutanaqishah" | null;
+  status: "LAYAK" | "WASPADA" | "TIDAK_LAYAK";
+  earPersen: string | null;
+  angsuranPertama: number | null;
+  totalPembayaran: number | null;
+  dscrRataRata: string | null;
+  npv: number | null;
+  irrPersen: string | null;
+  der: string | null;
+}
+
+export async function listScenariosForCompare(
+  userId: string,
+): Promise<ScenarioForCompare[]> {
+  return db
+    .select({
+      id: scenarios.id,
+      nama: scenarios.nama,
+      jenisSkema: scenarios.jenisSkema,
+      jenisAkad: scenarios.jenisAkad,
+      status: scenarioResults.status,
+      earPersen: scenarioResults.earPersen,
+      angsuranPertama: scenarioResults.angsuranPertama,
+      totalPembayaran: scenarioResults.totalPembayaran,
+      dscrRataRata: scenarioResults.dscrRataRata,
+      npv: scenarioResults.npv,
+      irrPersen: scenarioResults.irrPersen,
+      der: scenarioResults.der,
+    })
+    .from(scenarios)
+    .innerJoin(scenarioResults, eq(scenarioResults.scenarioId, scenarios.id))
+    .where(eq(scenarios.userId, userId))
+    .orderBy(desc(scenarios.createdAt));
+}
