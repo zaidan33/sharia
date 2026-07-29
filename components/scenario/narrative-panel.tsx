@@ -30,7 +30,7 @@ export function NarrativePanel({ narrative }: { narrative: NarrativeResult }) {
             <Sparkles className="size-4 text-amber" />
             <h2 className="text-base font-semibold text-ink">Analisis mendalam</h2>
             <span className="rounded-full bg-amber/10 px-2 py-0.5 text-[11px] font-medium text-amber">
-              DeepSeek
+              AI
             </span>
           </div>
           <p className="whitespace-pre-line text-sm leading-relaxed text-ink">
@@ -70,7 +70,7 @@ export function NarrativePanel({ narrative }: { narrative: NarrativeResult }) {
 
       <p className="text-xs text-slate">
         {narrative.source === "ai"
-          ? "Analisis mendalam dibuat DeepSeek; angka tetap berasal dari hasil hitung mesin. Angka mengikuti asumsi skenario - bukan jaminan hasil."
+          ? "Analisis mendalam dibuat AI; angka tetap berasal dari hasil hitung mesin. Angka mengikuti asumsi skenario - bukan jaminan hasil."
           : "Narasi dibuat dari template berbasis hasil hitung, bukan dari model bahasa. Angka mengikuti asumsi skenario - bukan jaminan hasil."}
       </p>
     </div>

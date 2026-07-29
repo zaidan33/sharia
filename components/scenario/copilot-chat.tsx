@@ -101,7 +101,7 @@ export function CopilotChat({
           <div className="space-y-3">
             <p className="text-sm text-slate">
               Tanyakan tentang skenario Anda: perbandingan, risiko, atau
-              rekomendasi. Jawaban dibantu DeepSeek; bila tidak tersedia,
+              rekomendasi. Jawaban dibantu AI; bila tidak tersedia,
               memakai aturan. Riwayat tersimpan di perangkat ini.
             </p>
             {suggestions.length >= 2 && (
@@ -132,7 +132,7 @@ export function CopilotChat({
             </div>
             {m.role === "assistant" && m.source === "ai" && (
               <span className="inline-flex w-fit items-center gap-1 rounded-full bg-amber/10 px-2 py-0.5 text-[10px] font-medium text-amber">
-                <Sparkles className="size-3" /> Dijawab DeepSeek
+                <Sparkles className="size-3" /> Dijawab AI
               </span>
             )}
             {m.comparison && m.comparison.length >= 2 && <ComparisonTable rows={m.comparison} />}

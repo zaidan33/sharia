@@ -136,7 +136,7 @@ export function ShariaCheckPanel({
                 <Sparkles className="size-4 text-amber" />
                 <h3 className="text-sm font-medium text-ink">Analisis mendalam</h3>
                 <span className="rounded-full bg-amber/10 px-2 py-0.5 text-[11px] font-medium text-amber">
-                  DeepSeek
+                  AI
                 </span>
               </div>
               <p className="whitespace-pre-line text-sm leading-relaxed text-ink">

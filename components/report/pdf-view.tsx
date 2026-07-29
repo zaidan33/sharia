@@ -38,7 +38,7 @@ export default function PdfView({ data }: { data: ReportData }) {
       <p className="text-xs text-slate">
         Dokumen dibuat di peramban Anda. Gunakan tombol unduh, atau ikon
         cetak/simpan pada penampil di atas. Ringkasan naratif bersumber dari
-        template perhitungan{data.narrativeSource === "ai" ? " (diperdalam DeepSeek)" : ""}.
+        template perhitungan{data.narrativeSource === "ai" ? " (diperdalam AI)" : ""}.
       </p>
     </div>
   );
