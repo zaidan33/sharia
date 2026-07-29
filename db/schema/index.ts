@@ -2,3 +2,4 @@
 export * from "./auth";
 export * from "./scenarios";
 export * from "./scenario-results";
+export * from "./sensitivity-results";

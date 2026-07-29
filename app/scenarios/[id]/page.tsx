@@ -9,6 +9,7 @@ import { StatusBadge } from "@/components/scenario/status-badge";
 import { DeleteScenarioDialog } from "@/components/scenario/delete-scenario-dialog";
 import { ScenarioResults } from "@/components/scenario/scenario-results";
 import { ModelCaveats } from "@/components/scenario/model-caveats";
+import { SensitivityPanel } from "@/components/scenario/sensitivity-panel";
 import { JENIS_AKAD_LABEL, PROFIL_RISIKO_LABEL } from "@/lib/constants";
 
 export default async function ScenarioDetailPage({
@@ -59,6 +60,8 @@ export default async function ScenarioDetailPage({
         input={input}
         computation={computation}
       />
+
+      <SensitivityPanel scenarioId={row.id} />
 
       <ModelCaveats />
     </div>
