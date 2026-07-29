@@ -36,6 +36,9 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
               <Button asChild variant="ghost" size="sm">
                 <Link href="/copilot">Copilot</Link>
               </Button>
+              <Button asChild variant="ghost" size="sm">
+                <Link href="/sharia-check">Cek Syariah</Link>
+              </Button>
             </nav>
           </div>
           <div className="flex items-center gap-3">
