@@ -23,11 +23,11 @@ describe("calibrate", () => {
     }
   });
 
-  it("median sektor Ritel wajar (pertumbuhan ~5, margin ~22)", () => {
+  it("median sektor Ritel wajar (pertumbuhan ~6, margin ~17,5)", () => {
     const c = calibrate("Ritel");
     const byKey = Object.fromEntries(c.map((a) => [a.key, a]));
-    expect(byKey.pertumbuhanPendapatanTahunan.suggested).toBeCloseTo(5, 0);
-    expect(byKey.marginKontribusiPersen.suggested).toBeCloseTo(22, 0);
+    expect(byKey.pertumbuhanPendapatanTahunan.suggested).toBeCloseTo(6, 0);
+    expect(byKey.marginKontribusiPersen.suggested).toBeCloseTo(17.5, 0);
     expect(byKey.pertumbuhanPendapatanTahunan.reference).toContain("Ritel");
   });
 

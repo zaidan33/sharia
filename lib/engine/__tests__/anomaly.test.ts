@@ -7,15 +7,15 @@ import { SEED_SCENARIOS } from "@/lib/seed-data";
 
 const S1 = SEED_SCENARIOS[0]; // Ritel
 
-// Input "normal" = semua metrik tepat di median sektor Ritel.
+// Input "normal" = semua metrik tepat di median sektor Ritel (seed V6).
 const normalRitel = {
   ...S1,
-  pendapatanBulananAwal: 160_000_000,
-  opexBulananAwal: 128_000_000,
-  tingkatBiayaTahunan: 6.8,
-  pertumbuhanPendapatanTahunan: 5,
-  marginKontribusiPersen: 22,
-  tenorBulan: 24,
+  pendapatanBulananAwal: 57_500_000,
+  opexBulananAwal: 47_500_000,
+  tingkatBiayaTahunan: 9.5,
+  pertumbuhanPendapatanTahunan: 6,
+  marginKontribusiPersen: 17.5,
+  tenorBulan: 21,
 };
 
 describe("detectAnomalies", () => {
