@@ -11,6 +11,8 @@ import {
 } from "@/lib/validation/scenario-schema";
 import { detectAnomalies } from "@/lib/engine/anomaly";
 import { AnomalyWarnings } from "@/components/scenario/anomaly-warnings";
+import { ImportPanel } from "@/components/scenario/import-panel";
+import type { ExtractedScenario } from "@/lib/extract";
 import { createScenario, updateScenario } from "@/lib/actions/scenario-actions";
 import {
   SEKTOR_USAHA,
@@ -203,6 +205,45 @@ export function ScenarioForm({
     [watched],
   );
 
+  // V4.2: terapkan hasil ekstraksi teks ke form (hanya field yang ada).
+  const applyExtracted = (e: ExtractedScenario) => {
+    const next: FormValues = { ...form.getValues() };
+    if (e.nama) next.nama = e.nama;
+    if (e.jenisUsaha) next.jenisUsaha = e.jenisUsaha;
+    if (e.tujuanPembiayaan) next.tujuanPembiayaan = e.tujuanPembiayaan;
+    if (e.profilRisiko) next.profilRisiko = e.profilRisiko;
+    if (e.kebutuhanDana != null) next.kebutuhanDana = String(e.kebutuhanDana);
+    if (e.tenorBulan != null) next.tenorBulan = String(e.tenorBulan);
+    if (e.jenisSkema) {
+      next.jenisSkema = e.jenisSkema;
+      if (e.jenisSkema === "konvensional") {
+        next.jenisAkad = "";
+        next.basisTingkatBiaya = e.basisTingkatBiaya ?? "efektif";
+      } else {
+        next.jenisAkad = e.jenisAkad ?? "murabahah";
+        const basis =
+          e.basisTingkatBiaya ??
+          (e.jenisAkad === "musyarakah_mutanaqishah" ? "efektif" : "flat");
+        next.basisTingkatBiaya = basis;
+      }
+    } else if (e.basisTingkatBiaya) {
+      next.basisTingkatBiaya = e.basisTingkatBiaya;
+    }
+    if (e.tingkatBiayaTahunan != null) next.tingkatBiayaTahunan = String(e.tingkatBiayaTahunan);
+    if (e.pendapatanBulananAwal != null) next.pendapatanBulananAwal = String(e.pendapatanBulananAwal);
+    if (e.opexBulananAwal != null) next.opexBulananAwal = String(e.opexBulananAwal);
+    if (e.pertumbuhanPendapatanTahunan != null) next.pertumbuhanPendapatanTahunan = String(e.pertumbuhanPendapatanTahunan);
+    if (e.inflasiBiayaTahunan != null) next.inflasiBiayaTahunan = String(e.inflasiBiayaTahunan);
+    if (e.marginKontribusiPersen != null) next.marginKontribusiPersen = String(e.marginKontribusiPersen);
+    if (e.ekuitasAwal != null) next.ekuitasAwal = String(e.ekuitasAwal);
+    if (e.kewajibanLain != null) next.kewajibanLain = String(e.kewajibanLain);
+    if (e.deltaPendapatanBulanan != null) next.deltaPendapatanBulanan = String(e.deltaPendapatanBulanan);
+    if (e.deltaOpexBulanan != null) next.deltaOpexBulanan = String(e.deltaOpexBulanan);
+    if (e.discountRateTahunan != null) next.discountRateTahunan = String(e.discountRateTahunan);
+    form.reset(next);
+    setFieldErrors({});
+  };
+
   const onAkadChange = (value: string) => {
     form.setValue("jenisAkad", value);
     if (value === "murabahah" || value === "ijarah")
@@ -262,6 +303,8 @@ export function ScenarioForm({
 
   return (
     <div className="space-y-6">
+      <ImportPanel onExtracted={applyExtracted} />
+
       <ol className="flex flex-wrap items-center gap-2 text-xs">
         {STEPS.map((label, i) => (
           <li key={label} className="flex items-center gap-2">
