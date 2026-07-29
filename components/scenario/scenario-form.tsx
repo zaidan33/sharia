@@ -11,6 +11,7 @@ import {
 } from "@/lib/validation/scenario-schema";
 import { detectAnomalies } from "@/lib/engine/anomaly";
 import { AnomalyWarnings } from "@/components/scenario/anomaly-warnings";
+import { CalibrationHints } from "@/components/scenario/calibration-hints";
 import { ImportPanel } from "@/components/scenario/import-panel";
 import type { ExtractedScenario } from "@/lib/extract";
 import { createScenario, updateScenario } from "@/lib/actions/scenario-actions";
@@ -361,6 +362,12 @@ export function ScenarioForm({
 
         {step === 2 && (
           <div className="grid gap-4 sm:grid-cols-2">
+            <CalibrationHints
+              sector={watched.jenisUsaha}
+              amount={toInt(watched.kebutuhanDana)}
+              tenor={toInt(watched.tenorBulan)}
+              onApply={(key, value) => form.setValue(key as keyof FormValues, String(value), { shouldValidate: false })}
+            />
             <TextField name="pendapatanBulananAwal" label="Pendapatan bulanan awal" error={err("pendapatanBulananAwal")} register={register} inputMode="numeric" placeholder="40000000" />
             <TextField name="opexBulananAwal" label="Opex bulanan awal" error={err("opexBulananAwal")} register={register} inputMode="numeric" placeholder="32000000" />
             <TextField name="pertumbuhanPendapatanTahunan" label="Pertumbuhan pendapatan / tahun" hint="-50% s.d. 100%" error={err("pertumbuhanPendapatanTahunan")} register={register} inputMode="decimal" placeholder="5" />
