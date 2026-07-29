@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { ZodError } from "zod";
 import { useForm, type UseFormRegister } from "react-hook-form";
@@ -9,6 +9,8 @@ import {
   scenarioInputSchema,
   type ScenarioInput,
 } from "@/lib/validation/scenario-schema";
+import { detectAnomalies } from "@/lib/engine/anomaly";
+import { AnomalyWarnings } from "@/components/scenario/anomaly-warnings";
 import { createScenario, updateScenario } from "@/lib/actions/scenario-actions";
 import {
   SEKTOR_USAHA,
@@ -194,6 +196,13 @@ export function ScenarioForm({
   const jenisAkad = form.watch("jenisAkad");
   const err = (name: string) => fieldErrors[name]?.[0];
 
+  // V3.2: deteksi anomali live terhadap isian saat ini.
+  const watched = form.watch();
+  const anomalies = useMemo(
+    () => detectAnomalies(buildPayload(watched)),
+    [watched],
+  );
+
   const onAkadChange = (value: string) => {
     form.setValue("jenisAkad", value);
     if (value === "murabahah" || value === "ijarah")
@@ -334,6 +343,8 @@ export function ScenarioForm({
           </>
         )}
       </div>
+
+      <AnomalyWarnings warnings={anomalies} />
 
       <div className="flex items-center justify-between border-t border-border pt-4">
         <Button type="button" variant="ghost" onClick={back} disabled={step === 0}>
