@@ -11,6 +11,9 @@ import { ScenarioResults } from "@/components/scenario/scenario-results";
 import { ModelCaveats } from "@/components/scenario/model-caveats";
 import { SensitivityPanel } from "@/components/scenario/sensitivity-panel";
 import { MonteCarloPanel } from "@/components/scenario/monte-carlo-panel";
+import { NarrativePanel } from "@/components/scenario/narrative-panel";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { generateNarrative } from "@/lib/ai/narrative";
 import { JENIS_AKAD_LABEL, PROFIL_RISIKO_LABEL } from "@/lib/constants";
 
 export default async function ScenarioDetailPage({
@@ -27,6 +30,7 @@ export default async function ScenarioDetailPage({
 
   const input = dbRowToScenarioInput(row);
   const computation = computeScenario(input);
+  const narrative = generateNarrative(input, computation);
   const akad = row.jenisAkad ? JENIS_AKAD_LABEL[row.jenisAkad] : "Konvensional";
 
   return (
@@ -56,17 +60,30 @@ export default async function ScenarioDetailPage({
         </div>
       </div>
 
-      <ScenarioResults
-        scenarioId={row.id}
-        input={input}
-        computation={computation}
-      />
+      <Tabs defaultValue="analisis" className="space-y-6">
+        <TabsList>
+          <TabsTrigger value="analisis">Analisis</TabsTrigger>
+          <TabsTrigger value="narasi">Narasi</TabsTrigger>
+        </TabsList>
 
-      <SensitivityPanel scenarioId={row.id} />
+        <TabsContent value="analisis" className="space-y-6">
+          <ScenarioResults
+            scenarioId={row.id}
+            input={input}
+            computation={computation}
+          />
 
-      <MonteCarloPanel scenarioId={row.id} />
+          <SensitivityPanel scenarioId={row.id} />
 
-      <ModelCaveats />
+          <MonteCarloPanel scenarioId={row.id} />
+
+          <ModelCaveats />
+        </TabsContent>
+
+        <TabsContent value="narasi">
+          <NarrativePanel narrative={narrative} />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }
