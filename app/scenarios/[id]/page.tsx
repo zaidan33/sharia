@@ -13,7 +13,7 @@ import { SensitivityPanel } from "@/components/scenario/sensitivity-panel";
 import { MonteCarloPanel } from "@/components/scenario/monte-carlo-panel";
 import { NarrativePanel } from "@/components/scenario/narrative-panel";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { generateNarrative } from "@/lib/ai/narrative";
+import { generateNarrativeEnhanced } from "@/lib/ai/narrative";
 import { JENIS_AKAD_LABEL, PROFIL_RISIKO_LABEL } from "@/lib/constants";
 
 export default async function ScenarioDetailPage({
@@ -30,7 +30,7 @@ export default async function ScenarioDetailPage({
 
   const input = dbRowToScenarioInput(row);
   const computation = computeScenario(input);
-  const narrative = generateNarrative(input, computation);
+  const narrative = await generateNarrativeEnhanced(input, computation);
   const akad = row.jenisAkad ? JENIS_AKAD_LABEL[row.jenisAkad] : "Konvensional";
 
   return (

@@ -8,6 +8,7 @@
  */
 import type { StatusKelayakan } from "@/lib/engine";
 import { formatPersen, formatRasio, formatRupiah, formatRupiahCompact } from "@/lib/format";
+import { askDeepSeek, stripMarkdown } from "@/lib/ai/deepseek";
 
 export type CopilotIntent = "comparison" | "risk" | "recommendation" | "info";
 
@@ -28,6 +29,8 @@ export interface CopilotAnswer {
   text: string;
   matched: ScenarioContext[];
   comparison: ScenarioContext[]; // dua skenario untuk side-by-side
+  /** Sumber jawaban: "ai" (DeepSeek) atau "rule" (fallback aturan). */
+  source: "ai" | "rule";
 }
 
 const EAR = (v: number | null) => (v === null ? "-" : formatPersen(v, 2));
@@ -170,5 +173,54 @@ export function answerCopilot(
       text = infoText(matched, scenarios);
   }
 
-  return { intent, text, matched, comparison };
+  return { intent, text, matched, comparison, source: "rule" };
+}
+
+// ---------------------------------------------------------------------------
+// V6.4: Jawaban natural via DeepSeek (intent/matched/comparison tetap dari
+// aturan; hanya `text` yang diperdalam. Fallback ke rule-based di atas).
+// ---------------------------------------------------------------------------
+
+const COPILOT_SYSTEM_PROMPT =
+  "Anda copilot analisis pembiayaan syariah di Indonesia. Jawab pertanyaan " +
+  "pengguna dalam Bahasa Indonesia natural, ringkas (maksimal 5-6 kalimat atau " +
+  "daftar pendek), profesional, tanpa gaya robot. Aturan ketat: gunakan HANYA " +
+  "angka & data skenario yang diberikan; jangan mengarang skenario/metric baru; " +
+  "jangan berisi janji hasil. EAR adalah pembanding utama antar-skema. " +
+  "Hindari tanda em dash.";
+
+function ctxLine(s: ScenarioContext): string {
+  return (
+    `- ${s.nama} [${s.skemaLabel}, status ${s.status}]: ` +
+    `EAR ${EAR(s.earPersen)}, DSCR rata-rata ${DSCR(s.dscrRataRata)} ` +
+    `(min ${DSCR(s.dscrMinimum)}), NPV ${NPV(s.npv)}, ` +
+    `IRR ${s.irrPersen === null ? "-" : formatPersen(s.irrPersen, 2)}`
+  );
+}
+
+/**
+ * Jawaban copilot. Intent, skenario yang cocok, dan pasangan perbandingan
+ * selalu dari mesin aturan (UI side-by-side mengandalkannya). Bila DeepSeek
+ * tersedia, teks jawaban ditulis ulang secara natural; bila gagal, pakai rule.
+ */
+export async function answerCopilotEnhanced(
+  question: string,
+  scenarios: ScenarioContext[],
+): Promise<CopilotAnswer> {
+  const base = answerCopilot(question, scenarios);
+  if (scenarios.length === 0) return base; // tak ada data -> rule cukup.
+
+  const scope = base.matched.length > 0 ? base.matched : scenarios;
+  const userMsg =
+    `Pertanyaan: "${question}"\n` +
+    `Intent terdeteksi: ${base.intent}.\n` +
+    `Jawaban dasar (rujukan, boleh diparafrase tapi angka harus sama): ${base.text}\n` +
+    `Skenario yang relevan:\n${scope.map(ctxLine).join("\n")}`;
+
+  const ai = await askDeepSeek(COPILOT_SYSTEM_PROMPT, userMsg, {
+    temperature: 0.4,
+    maxTokens: 500,
+    timeoutMs: 25_000,
+  });
+  return ai === null ? base : { ...base, text: stripMarkdown(ai), source: "ai" };
 }

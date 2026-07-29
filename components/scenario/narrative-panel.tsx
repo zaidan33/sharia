@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Check, Copy } from "lucide-react";
+import { Check, Copy, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import type { NarrativeResult } from "@/lib/ai/narrative";
@@ -24,6 +24,21 @@ export function NarrativePanel({ narrative }: { narrative: NarrativeResult }) {
 
   return (
     <div className="space-y-4">
+      {narrative.aiNarrative && (
+        <Card className="space-y-3 border-l-4 border-l-amber p-5">
+          <div className="flex items-center gap-2">
+            <Sparkles className="size-4 text-amber" />
+            <h2 className="text-base font-semibold text-ink">Analisis mendalam</h2>
+            <span className="rounded-full bg-amber/10 px-2 py-0.5 text-[11px] font-medium text-amber">
+              DeepSeek
+            </span>
+          </div>
+          <p className="whitespace-pre-line text-sm leading-relaxed text-ink">
+            {narrative.aiNarrative}
+          </p>
+        </Card>
+      )}
+
       <Card className="space-y-3 p-5">
         <div className="flex items-center justify-between gap-3">
           <h2 className="text-base font-semibold text-ink">Profil pembiayaan</h2>
@@ -54,8 +69,9 @@ export function NarrativePanel({ narrative }: { narrative: NarrativeResult }) {
       </Card>
 
       <p className="text-xs text-slate">
-        Narasi dibuat dari template berbasis hasil hitung, bukan dari model
-        bahasa. Angka mengikuti asumsi skenario - bukan jaminan hasil.
+        {narrative.source === "ai"
+          ? "Analisis mendalam dibuat DeepSeek; angka tetap berasal dari hasil hitung mesin. Angka mengikuti asumsi skenario - bukan jaminan hasil."
+          : "Narasi dibuat dari template berbasis hasil hitung, bukan dari model bahasa. Angka mengikuti asumsi skenario - bukan jaminan hasil."}
       </p>
     </div>
   );

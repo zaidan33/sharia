@@ -1,11 +1,12 @@
 /**
- * Document Extraction Agent (V4.2) - endpoint POST /api/extract.
- * Menerima { text } dan mengembalikan field skenario hasil ekstraksi regex.
- * Verifikasi sesi. AI integration menyusul (PRD §16 V4).
+ * Document Extraction Agent (V4.2 / V6.4) - endpoint POST /api/extract.
+ * Menerima { text }, mengembalikan field skenario hasil ekstraksi. Jalur utama
+ * DeepSeek (JSON terstruktur); mundur ke regex bila tidak dikonfigurasi/gagal.
+ * Verifikasi sesi.
  */
 import { NextResponse, type NextRequest } from "next/server";
 import { getSessionUserId } from "@/lib/queries";
-import { extractScenarioFields } from "@/lib/extract";
+import { extractScenarioFieldsEnhanced } from "@/lib/extract";
 
 export async function POST(req: NextRequest) {
   const userId = await getSessionUserId();
@@ -21,6 +22,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "INVALID_BODY" }, { status: 400 });
   }
 
-  const fields = extractScenarioFields(text);
+  const fields = await extractScenarioFieldsEnhanced(text);
   return NextResponse.json({ fields });
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useTransition } from "react";
-import { Send, Trash2, Loader2, MessageSquare } from "lucide-react";
+import { Send, Trash2, Loader2, MessageSquare, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
@@ -16,6 +16,7 @@ interface ChatMessage {
   role: "user" | "assistant";
   text: string;
   comparison?: ScenarioContext[];
+  source?: "ai" | "rule";
 }
 
 export function CopilotChat({
@@ -62,7 +63,13 @@ export function CopilotChat({
       if (res.ok) {
         setMessages((m) => [
           ...m,
-          { id: crypto.randomUUID(), role: "assistant", text: res.data.text, comparison: res.data.comparison },
+          {
+            id: crypto.randomUUID(),
+            role: "assistant",
+            text: res.data.text,
+            comparison: res.data.comparison,
+            source: res.data.source,
+          },
         ]);
       } else {
         setError(res.error === "UNAUTHORIZED" ? "Sesi berakhir. Muat ulang dan masuk kembali." : "Gagal memproses.");
@@ -94,8 +101,8 @@ export function CopilotChat({
           <div className="space-y-3">
             <p className="text-sm text-slate">
               Tanyakan tentang skenario Anda: perbandingan, risiko, atau
-              rekomendasi. Jawaban rule-based (bukan LLM). Riwayat tersimpan di
-              perangkat ini.
+              rekomendasi. Jawaban dibantu DeepSeek; bila tidak tersedia,
+              memakai aturan. Riwayat tersimpan di perangkat ini.
             </p>
             {suggestions.length >= 2 && (
               <div className="flex flex-wrap gap-2">
@@ -123,6 +130,11 @@ export function CopilotChat({
             >
               {m.text}
             </div>
+            {m.role === "assistant" && m.source === "ai" && (
+              <span className="inline-flex w-fit items-center gap-1 rounded-full bg-amber/10 px-2 py-0.5 text-[10px] font-medium text-amber">
+                <Sparkles className="size-3" /> Dijawab DeepSeek
+              </span>
+            )}
             {m.comparison && m.comparison.length >= 2 && <ComparisonTable rows={m.comparison} />}
           </div>
         ))}

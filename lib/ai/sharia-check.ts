@@ -10,6 +10,8 @@
  */
 import type { ScenarioComputation, ScenarioInput } from "@/lib/engine";
 import { formatPersen } from "@/lib/format";
+import { JENIS_AKAD_LABEL } from "@/lib/constants";
+import { askDeepSeek, stripMarkdown } from "@/lib/ai/deepseek";
 
 export type ShariaStatus = "SYARIAH" | "TIDAK_SESUI" | "PERLU_KONFIRMASI_DPS";
 export type FindingLevel = "ok" | "warning" | "violation";
@@ -31,6 +33,10 @@ export interface ShariaCheckResult {
   findings: ShariaFinding[];
   dpsChecklist: DpsItem[];
   summary: string;
+  /** Analisis mendalam dari DeepSeek (V6.4); null bila memakai rule-based. */
+  aiAnalysis: string | null;
+  /** Sumber analisis: "ai" (DeepSeek) atau "rule" (fallback). */
+  source: "ai" | "rule";
 }
 
 const RIBA_THRESHOLD = 20; // EAR % di atas ini = peringatan riba
@@ -133,7 +139,50 @@ export function checkShariaCompliance(
     findings,
     dpsChecklist: dps,
     summary: summaryFor(status),
+    aiAnalysis: null,
+    source: "rule",
   };
+}
+
+// ---------------------------------------------------------------------------
+// V6.4: Analisis kepatuhan mendalam via DeepSeek (status/findings/checklist
+// tetap dari aturan; hanya menambah paragraf analisis. Fallback ke rule).
+// ---------------------------------------------------------------------------
+
+const SHARIA_SYSTEM_PROMPT =
+  "Anda ahli pembiayaan syariah (akad murabahah, ijarah, musyarakah mutanaqishah) " +
+  "di Indonesia. Tugas: menulis analisis kepatuhan syariah 2-3 paragraf dalam " +
+  "Bahasa Indonesia formal dan natural. Jelaskan alasan status, kesesuaian akad " +
+  "dan basis perhitungan, pertimbangan riba (EAR), serta apa yang perlu " +
+  "dikonsultasikan ke Dewan Pengawas Syariah (DPS). Aturan ketat: gunakan HANYA " +
+  "data yang diberikan; ingatkan bahwa ini simulasi otomatis, bukan fatwa resmi; " +
+  "jangan berisi janji; hindari tanda em dash.";
+
+/**
+ * Pemeriksaan kepatuhan. Status, temuan, dan checklist DPS selalu dari aturan
+ * (presisi & UI mengandalkannya). Bila DeepSeek tersedia, `aiAnalysis` diisi
+ * paragraf analisis mendalam; bila gagal, null.
+ */
+export async function checkShariaComplianceEnhanced(
+  input: ScenarioInput,
+  comp: ScenarioComputation,
+): Promise<ShariaCheckResult> {
+  const base = checkShariaCompliance(input, comp);
+  const ear = comp.schedule.earPersen;
+  const akad = input.jenisSkema === "konvensional" ? "konvensional (di luar lingkup syariah)" : input.jenisAkad ? JENIS_AKAD_LABEL[input.jenisAkad] : "syariah";
+  const userMsg =
+    `Struktur: skema ${input.jenisSkema}, akad ${akad}, basis ${input.basisTingkatBiaya}, ` +
+    `tingkat kuotasi ${formatPersen(input.tingkatBiayaTahunan, 1)}.\n` +
+    `EAR: ${ear === null ? "tak terdefinisi" : formatPersen(ear, 2)} (ambang riba 20%).\n` +
+    `Status otomatis: ${base.status}.\n` +
+    `Temuan aturan:\n${base.findings.map((f) => `- [${f.level}] ${f.rule}: ${f.message}`).join("\n")}`;
+
+  const ai = await askDeepSeek(SHARIA_SYSTEM_PROMPT, userMsg, {
+    temperature: 0.4,
+    maxTokens: 600,
+    timeoutMs: 25_000,
+  });
+  return ai === null ? base : { ...base, aiAnalysis: stripMarkdown(ai), source: "ai" };
 }
 
 /** Apakah seluruh item checklist DPS sudah dicentang (konfirmasi tuntas). */

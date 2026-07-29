@@ -2,7 +2,7 @@
  * Tes Document Extraction (V4.2) - parser regex.
  */
 import { describe, it, expect } from "vitest";
-import { extractScenarioFields } from "@/lib/extract";
+import { extractScenarioFields, normalizeExtracted } from "@/lib/extract";
 
 const DOKUMEN = `
 Nama Usaha: Kedai Kopi Makmur
@@ -75,5 +75,78 @@ describe("extractScenarioFields", () => {
   it("tenor dalam tahun dikonversi ke bulan", () => {
     const s = extractScenarioFields("Pinjaman 100 juta, tenor 2 tahun.");
     expect(s.tenorBulan).toBe(24);
+  });
+});
+
+describe("normalizeExtracted (V6.4)", () => {
+  it("objek lengkap dengan pemisah ID -> dijejit & dipertahankan", () => {
+    const r = normalizeExtracted({
+      nama: "  Kedai Kopi Makmur  ",
+      jenisUsaha: "f&b",
+      tujuanPembiayaan: "Ekspansi cabang baru",
+      profilRisiko: "SEDANG",
+      kebutuhanDana: "Rp 300.000.000",
+      tenorBulan: "30",
+      tingkatBiayaTahunan: "12,5",
+      basisTingkatBiaya: "Flat",
+      pendapatanBulananAwal: 110_000_000,
+      ekuitasAwal: "120.000.000",
+      pertumbuhanPendapatanTahunan: 10,
+      marginKontribusiPersen: 35,
+      discountRateTahunan: 12,
+    });
+    expect(r.nama).toBe("Kedai Kopi Makmur");
+    expect(r.jenisUsaha).toBe("F&B");
+    expect(r.profilRisiko).toBe("sedang");
+    expect(r.kebutuhanDana).toBe(300_000_000);
+    expect(r.tenorBulan).toBe(30);
+    expect(r.tingkatBiayaTahunan).toBe(12.5);
+    expect(r.basisTingkatBiaya).toBe("flat");
+    expect(r.ekuitasAwal).toBe(120_000_000);
+  });
+
+  it("akad alias (mmq) dipetakan; skema syariak otomatis", () => {
+    const r = normalizeExtracted({ jenisAkad: "MMQ" });
+    expect(r.jenisAkad).toBe("musyarakah_mutanaqishah");
+    expect(r.jenisSkema).toBe("syariah");
+  });
+
+  it("konvensional -> jenisAkad dipaksa null", () => {
+    const r = normalizeExtracted({ jenisSkema: "konvensional", jenisAkad: "murabahah" });
+    expect(r.jenisSkema).toBe("konvensional");
+    expect(r.jenisAkad).toBeNull();
+  });
+
+  it("MMQ + flat -> basis dipaksa efektif (kombinasi valid)", () => {
+    const r = normalizeExtracted({
+      jenisAkad: "musyarakah_mutanaqishah",
+      basisTingkatBiaya: "flat",
+    });
+    expect(r.basisTingkatBiaya).toBe("efektif");
+  });
+
+  it("field di luar rentang / non-angka / enum salah dibuang", () => {
+    const r = normalizeExtracted({
+      nama: "AB", // < 3 char
+      tenorBulan: 2, // < 3
+      kebutuhanDana: 500, // < 1jt
+      tingkatBiayaTahunan: 999, // > 60
+      jenisUsaha: "Batik", // bukan sektor valid
+      profilRisiko: "ekstrem",
+      pendapatanBulananAwal: "bukan angka",
+    });
+    expect(r.nama).toBeUndefined();
+    expect(r.tenorBulan).toBeUndefined();
+    expect(r.kebutuhanDana).toBeUndefined();
+    expect(r.tingkatBiayaTahunan).toBeUndefined();
+    expect(r.jenisUsaha).toBeUndefined();
+    expect(r.profilRisiko).toBeUndefined();
+    expect(r.pendapatanBulananAwal).toBeUndefined();
+  });
+
+  it("input bukan objek -> objek kosong (tanpa lempar)", () => {
+    expect(normalizeExtracted(null)).toEqual({});
+    expect(normalizeExtracted("teks")).toEqual({});
+    expect(normalizeExtracted(undefined)).toEqual({});
   });
 });

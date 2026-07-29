@@ -8,6 +8,7 @@
 import type { ScenarioComputation, ScenarioInput, StatusKelayakan } from "@/lib/engine";
 import { JENIS_AKAD_LABEL } from "@/lib/constants";
 import { formatPersen, formatRasio, formatRupiah } from "@/lib/format";
+import { askDeepSeek, stripMarkdown } from "@/lib/ai/deepseek";
 
 export interface MetricNarrative {
   ear: string;
@@ -22,6 +23,10 @@ export interface NarrativeResult {
   rekomendasi: string;
   metrics: MetricNarrative;
   full: string; // seluruh paragraf digabung
+  /** Narasi mendalam dari DeepSeek (V6.4); null bila memakai template. */
+  aiNarrative: string | null;
+  /** Sumber narasi: "ai" (DeepSeek tersedia) atau "template" (fallback). */
+  source: "ai" | "template";
 }
 
 function akadLabel(input: ScenarioInput): string {
@@ -109,5 +114,65 @@ export function generateNarrative(
 
   const full = [profil, "", metrics.ear, metrics.dscr, metrics.npv, metrics.irr, "", kelayakan, "", rekomendasi].join("\n");
 
-  return { profil, kelayakan, rekomendasi, metrics, full };
+  return { profil, kelayakan, rekomendasi, metrics, full, aiNarrative: null, source: "template" };
+}
+
+// ---------------------------------------------------------------------------
+// V6.4: Narasi mendalam via DeepSeek (fallback ke template di atas).
+// ---------------------------------------------------------------------------
+
+const NARRATIVE_SYSTEM_PROMPT =
+  "Anda konsultan keuangan pembiayaan syariah di Indonesia. Tugas: menulis analisis " +
+  "naratif kelayakan pembiayaan dalam Bahasa Indonesia formal, profesional, dan " +
+  "natural (bukan gaya robot). Aturan ketat: gunakan HANYA angka yang diberikan, " +
+  "jangan menghitung ulang atau mengarang angka baru; jangan berisi janji/jaminan " +
+  "hasil; 2 sampai 3 paragraf ringkas; hindari tanda em dash; akhiri dengan satu " +
+  "kalimat rekomendasi yang konsisten dengan status kelayakan.";
+
+/** Susun konteks angka ringkas (kebenaran sumber) untuk dikirim ke model. */
+function buildContext(input: ScenarioInput, comp: ScenarioComputation): string {
+  const base = comp.varian.base;
+  return [
+    `nama: ${input.nama}`,
+    `sektor: ${input.jenisUsaha}`,
+    `tujuan: ${input.tujuanPembiayaan}`,
+    `profilRisiko: ${input.profilRisiko}`,
+    `skema: ${input.jenisSkema}${input.jenisAkad ? " (" + JENIS_AKAD_LABEL[input.jenisAkad] + ")" : ""}`,
+    `kebutuhanDana: ${formatRupiah(input.kebutuhanDana)}`,
+    `tenorBulan: ${input.tenorBulan}`,
+    `tingkatBiayaKuotasi: ${formatPersen(input.tingkatBiayaTahunan, 1)} (${input.basisTingkatBiaya})`,
+    `EAR: ${formatPersen(comp.schedule.earPersen, 2)}`,
+    `angsuranPertama: ${formatRupiah(comp.schedule.angsuran[0] ?? 0)}`,
+    `totalPembayaran: ${formatRupiah(comp.schedule.totalPembayaran)}`,
+    `statusKelayakan: ${statusLabel(comp.status)}`,
+    `DSCR_rataRata: ${base.dscrRataRata === null ? "-" : formatRasio(base.dscrRataRata)}`,
+    `DSCR_minimum: ${base.dscrMinimum === null ? "-" : formatRasio(base.dscrMinimum)}`,
+    `NPV: ${formatRupiah(base.npv)}`,
+    `IRR_tahunan: ${base.irr.irrTahunanPersen === null ? "-" : formatPersen(base.irr.irrTahunanPersen, 2)}`,
+    `discountRate: ${formatPersen(input.discountRateTahunan, 1)}`,
+    `DER: ${comp.der === null ? "-" : formatRasio(comp.der)}`,
+    `ROI_tahunan: ${formatPersen(comp.roiTahunanPersen, 1)}`,
+    `BEP_omzet_bulanan: ${formatRupiah(comp.breakEven.bepRupiah)}`,
+    `rekomendasiRuleBased: ${rekomendasiText(comp.status)}`,
+  ].join("\n");
+}
+
+/**
+ * Hasilkan narasi. Struktur (profil/metrics/kelayakan/rekomendasi) selalu dari
+ * template (angka presisi & UI mengandalkannya). Bila DeepSeek tersedia,
+ * `aiNarrative` diisi narasi mendalam; bila gagal, null (panel memakai template).
+ */
+export async function generateNarrativeEnhanced(
+  input: ScenarioInput,
+  comp: ScenarioComputation,
+): Promise<NarrativeResult> {
+  const base = generateNarrative(input, comp);
+  const ai = await askDeepSeek(
+    NARRATIVE_SYSTEM_PROMPT,
+    buildContext(input, comp),
+    { temperature: 0.5, maxTokens: 700, timeoutMs: 25_000 },
+  );
+  return ai === null
+    ? base
+    : { ...base, aiNarrative: stripMarkdown(ai), source: "ai" };
 }

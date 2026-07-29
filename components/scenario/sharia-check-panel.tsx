@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { Check, Loader2, ShieldCheck, ShieldAlert, ShieldQuestion } from "lucide-react";
+import { Check, Loader2, ShieldCheck, ShieldAlert, ShieldQuestion, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -129,6 +129,21 @@ export function ShariaCheckPanel({
           <Card className="space-y-2 p-4">
             <p className="text-sm text-ink">{result.summary}</p>
           </Card>
+
+          {result.aiAnalysis && (
+            <Card className="space-y-2 border-l-4 border-l-amber p-4">
+              <div className="flex items-center gap-2">
+                <Sparkles className="size-4 text-amber" />
+                <h3 className="text-sm font-medium text-ink">Analisis mendalam</h3>
+                <span className="rounded-full bg-amber/10 px-2 py-0.5 text-[11px] font-medium text-amber">
+                  DeepSeek
+                </span>
+              </div>
+              <p className="whitespace-pre-line text-sm leading-relaxed text-ink">
+                {result.aiAnalysis}
+              </p>
+            </Card>
+          )}
 
           <Card className="space-y-2 p-4">
             <h3 className="text-sm font-medium text-ink">Temuan pemeriksaan</h3>

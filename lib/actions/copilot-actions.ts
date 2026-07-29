@@ -10,7 +10,7 @@ import { scenarios, scenarioResults } from "@/db/schema";
 import { getSessionUserId } from "@/lib/queries";
 import { JENIS_AKAD_LABEL } from "@/lib/constants";
 import type { StatusKelayakan } from "@/lib/engine";
-import { answerCopilot, type CopilotAnswer, type ScenarioContext } from "@/lib/ai/copilot";
+import { answerCopilotEnhanced, type CopilotAnswer, type ScenarioContext } from "@/lib/ai/copilot";
 
 type Ok = { ok: true; data: CopilotAnswer };
 type Err = { ok: false; error: string };
@@ -57,5 +57,5 @@ export async function askCopilot(question: string): Promise<Ok | Err> {
     irrPersen: num(r.irrPersen),
   }));
 
-  return { ok: true, data: answerCopilot(question ?? "", ctx) };
+  return { ok: true, data: await answerCopilotEnhanced(question ?? "", ctx) };
 }

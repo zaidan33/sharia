@@ -17,7 +17,7 @@ export default async function CopilotPage() {
         </h1>
         <p className="text-sm text-slate">
           Tanya jawab tentang skenario Anda - perbandingan, risiko, atau
-          rekomendasi. Jawaban disusun dari aturan, bukan model bahasa.
+          rekomendasi. Jawaban dibantu DeepSeek dengan data skenario Anda.
         </p>
       </div>
       <CopilotChat suggestions={suggestions} />

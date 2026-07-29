@@ -11,7 +11,7 @@ import { getSessionUserId, getScenarioOwned } from "@/lib/queries";
 import { dbRowToScenarioInput } from "@/lib/mappers";
 import { computeScenario } from "@/lib/engine";
 import {
-  checkShariaCompliance,
+  checkShariaComplianceEnhanced,
   isDpsConfirmed,
   type ShariaCheckResult,
   type DpsItem,
@@ -36,7 +36,7 @@ export async function runShariaCheck(
 
   const input = dbRowToScenarioInput(row);
   const comp = computeScenario(input);
-  const result = checkShariaCompliance(input, comp);
+  const result = await checkShariaComplianceEnhanced(input, comp);
 
   await db
     .insert(shariaChecks)
