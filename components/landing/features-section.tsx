@@ -33,8 +33,8 @@ export function FeaturesSection() {
             Satu kerangka kerja, analisis menyeluruh
           </h2>
           <p className="mt-3 max-w-2xl text-base text-slate">
-            Dari perhitungan dasar hingga agen AI - semua dalam satu tempat,
-            dengan basis perhitungan yang konsisten.
+            Dari perhitungan dasar hingga alat bantu cerdas - semua dalam satu
+            tempat, dengan basis perhitungan yang konsisten.
           </p>
         </Reveal>
         <div className="mt-10 grid gap-5 sm:grid-cols-2">

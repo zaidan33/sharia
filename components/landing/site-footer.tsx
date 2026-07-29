@@ -23,7 +23,7 @@ export function SiteFooter() {
           ]}
         />
         <FooterCol
-          title="Agen AI"
+          title="Alat Bantu"
           links={[
             { href: "/copilot", label: "Copilot" },
             { href: "/sharia-check", label: "Cek kepatuhan syariah" },

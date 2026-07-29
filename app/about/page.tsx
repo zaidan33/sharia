@@ -21,11 +21,11 @@ const METODOLOGI = [
   },
 ];
 
-const AGEN = [
-  { icon: FileText, title: "Ekstraksi dokumen", body: "Mengurai teks pengajuan menjadi field skenario." },
-  { icon: Calculator, title: "Narasi otomatis", body: "Ringkasan kelayakan dalam bahasa Indonesia." },
-  { icon: Bot, title: "Copilot", body: "Tanya jawab perbandingan, risiko, rekomendasi." },
-  { icon: ShieldCheck, title: "Kepatuhan syariah", body: "Cek akad, deteksi riba, checklist DPS." },
+const ALAT_BANTU = [
+  { icon: FileText, title: "Ekstraksi dokumen", body: "Mengurai teks pengajuan dan ringkasan usaha menjadi field skenario yang siap dihitung." },
+  { icon: Calculator, title: "Narasi otomatis", body: "Menerjemahkan hasil hitung menjadi ringkasan kelayakan dalam bahasa Indonesia." },
+  { icon: Bot, title: "Copilot", body: "Tanya jawab soal perbandingan, risiko, dan rekomendasi skenario." },
+  { icon: ShieldCheck, title: "Kepatuhan syariah", body: "Memeriksa akad, mendeteksi indikasi riba, dan menyusun checklist DPS." },
 ];
 
 export default function AboutPage() {
@@ -82,14 +82,15 @@ export default function AboutPage() {
 
         <section className="space-y-4">
           <h2 className="font-display text-xl font-semibold text-ink">
-            Agen AI bawaan
+            Alat bantu analisis
           </h2>
           <p className="text-sm text-slate">
-            Semua agen bersifat rule-based/template secara default, dan dapat
-            ditingkatkan dengan model bahasa bila kunci API tersedia.
+            Empat alat bantu untuk mempercepat analisis - mengurai dokumen
+            pengajuan, menyajikan ringkasan naratif, menjawab pertanyaan, dan
+            memeriksa kepatuhan syariah.
           </p>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {AGEN.map((a) => (
+            {ALAT_BANTU.map((a) => (
               <Card key={a.title} className="h-full p-4">
                 <a.icon className="size-5 text-deepteal" />
                 <h3 className="mt-2 text-sm font-medium text-ink">{a.title}</h3>
