@@ -8,6 +8,7 @@ RUN npm install
 
 FROM base AS builder
 WORKDIR /app
+ENV NEXT_PUBLIC_BETTER_AUTH_URL=https://sharia.airlangga.link
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN npm run build
