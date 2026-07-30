@@ -2,17 +2,17 @@ const STEPS = [
   {
     n: "1",
     title: "Isi asumsi",
-    body: "Kebutuhan dana, tenor, skema, kondisi usaha, dan dampak yang diharapkan dari pembiayaan.",
+    body: "Masukkan kebutuhan dana, tenor, skema, kondisi usaha, dan dampak yang diharapkan dari pembiayaan.",
   },
   {
     n: "2",
-    title: "Engine menghitung",
-    body: "Jadwal pembiayaan, biaya efektif, arus kas, DSCR, DER, ROI, BEP, NPV, dan IRR.",
+    title: "Biarkan yang menghitung",
+    body: "Jadwal pembiayaan, biaya efektif, arus kas, DSCR, DER, ROI, break-even point, NPV, dan IRR - semua sekaligus.",
   },
   {
     n: "3",
-    title: "Lihat hasil transparan",
-    body: "Setiap angka membuka rumus dan nilai masukannya. Anda memeriksa, bukan sekadar mempercayai.",
+    title: "Periksa sendiri",
+    body: "Tiap angka membuka rumus dan nilai masukannya. Anda memeriksa, bukan sekadar mempercayai.",
   },
 ];
 
@@ -21,7 +21,7 @@ export function HowItWorks() {
     <section id="cara-kerja" className="border-b border-border bg-ivory">
       <div className="mx-auto max-w-5xl px-4 py-16">
         <h2 className="font-display text-2xl font-semibold text-ink sm:text-3xl">
-          Cara kerja
+          Cara kerjanya, tiga langkah
         </h2>
         <ol className="mt-8 grid gap-6 sm:grid-cols-3">
           {STEPS.map((s) => (

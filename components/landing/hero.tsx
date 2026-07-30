@@ -28,12 +28,12 @@ export function Hero() {
             Analisis kelayakan pembiayaan
           </p>
           <h1 className="font-display text-4xl font-bold leading-[1.1] text-ink sm:text-5xl">
-            Satu kebutuhan dana. Dua skema. Satu perbandingan yang adil.
+            Bandingkan pembiayaan syariah dan konvensional di atas meja yang sama
           </h1>
           <p className="max-w-xl text-base leading-relaxed text-slate">
-            Hitung kelayakan pembiayaan syariah dan konvensional dalam satu
-            kerangka kerja yang sama. Setiap angka bisa ditelusuri balik ke rumus
-            dan asumsinya, bukan kotak hitam.
+            Kedua skema dihitung dengan cara yang konsisten lewat satu kerangka
+            kerja. Tiap angka bisa ditelusuri balik ke rumus dan asumsinya, bukan
+            kotak hitam yang harus dipercaya begitu saja.
           </p>
           <div className="flex flex-wrap gap-3">
             <Button asChild size="lg">
@@ -44,7 +44,7 @@ export function Hero() {
             </Button>
           </div>
           <p className="text-xs text-slate">
-            Normalisasi ke Effective Annual Rate - perbandingan apple-to-apple antar-skema.
+            Semua kuotasi dinormalisasi ke Effective Annual Rate, agar perbandingan antar-skema adil.
           </p>
         </Reveal>
 

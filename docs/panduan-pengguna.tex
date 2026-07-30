@@ -1,0 +1,753 @@
+% ============================================================
+%  PANDUAN PENGGUNA — Aplikasi Analisis Kelayakan Pembiayaan
+%  Versi 1.0 — Juli 2026
+% ============================================================
+\documentclass[12pt,a4paper,twoside]{report}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[bahasa,english]{babel}
+\usepackage[top=2.5cm, bottom=2.5cm, left=3cm, right=2.5cm]{geometry}
+\usepackage{setspace}
+\onehalfspacing
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{siunitx}
+\usepackage[colorlinks=true,linkcolor=teal,urlcolor=teal]{hyperref}
+\usepackage{fancyhdr}
+\usepackage{csquotes}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{tabularx}
+\setlist{nosep,leftmargin=*}
+
+% Colors
+\definecolor{deepteal}{RGB}{11,79,74}
+\definecolor{amber}{RGB}{193,137,46}
+\definecolor{ink}{RGB}{20,32,31}
+\definecolor{slate}{RGB}{100,116,139}
+
+\renewcommand{\arraystretch}{1.15}
+
+% Header & Footer
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,RO]{\small\textcolor{deepteal}{\thepage}}
+\fancyhead[RE]{\small\textcolor{slate}{Panduan Pengguna}}
+\fancyhead[LO]{\small\textcolor{slate}{Analisis Kelayakan Pembiayaan}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Title page styling
+\title{\Huge\textcolor{deepteal}{Analisis Kelayakan Pembiayaan}\\[6pt]
+       \Large Panduan Pengguna}
+\author{Lihtr -- Universitas Airlangga}
+\date{}
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+\newpage
+
+% ============================================================
+%  DAFTAR ISI
+% ============================================================
+\tableofcontents
+\newpage
+
+% ============================================================
+\chapter{Pengenalan}
+% ============================================================
+
+\section{Tentang Aplikasi}
+
+Aplikasi Analisis Kelayakan Pembiayaan adalah alat bantu untuk mengevaluasi kelayakan pembiayaan, baik skema syariah maupun konvensional, dalam satu kerangka perhitungan yang konsisten dan transparan. Setiap angka yang muncul di layar dapat ditelusuri balik ke rumus dan asumsi yang menghasilkannya -- bukan skor dari \emph{kotak hitam}.
+
+Permasalahan utama yang dijawab alat ini adalah ketidakseimbangan perbandingan antar-skema. Margin murabahah dan ujrah ijarah umumnya dikutip sebagai persentase \emph{flat} atas pokok awal, sedangkan bunga anuitas dan bagi hasil musyarakah mutanaqishah bekerja atas saldo menurun. Angka kuotasi yang tampak setara ternyata tidak sebanding jika dihitung biaya efektif tahunannya. Alat ini menormalkan seluruh skema ke satu ukuran yang sama: \textbf{Effective Annual Rate} (EAR) yang diturunkan dari jadwal pembayaran aktual, bukan dari angka kuotasi.
+
+\section{Siapa yang Membutuhkan Alat Ini}
+
+Aplikasi ini dirancang untuk:
+\begin{itemize}
+  \item Pemilik usaha yang ingin menguji kemampuan membayar sebelum mengajukan pembiayaan
+  \item Konsultan keuangan yang mendampingi klien dalam pengambilan keputusan pendanaan
+  \item Analis internal lembaga yang mengevaluasi kelayakan pembiayaan
+  \item Siapa pun yang ingin membandingkan biaya riil skema syariah dan konvensional secara jujur
+\end{itemize}
+
+\section{Prinsip Dasar}
+
+\begin{enumerate}
+  \item \textbf{Transparansi penuh.} Setiap hasil menampilkan formula dan nilai masukannya. Tidak ada metrik yang tidak bisa dijelaskan.
+  \item \textbf{Kesetaraan perlakuan.} Syariah dan konvensional diperlakukan dengan kerangka yang sama -- keduanya dinormalkan ke EAR.
+  \item \textbf{Akui keterbatasan.} Model ini menyederhanakan kenyataan. Batasan dan asumsinya dinyatakan terbuka (Bab \ref{chap:batasan}).
+  \item \textbf{Sederhana dulu, mendalam kemudian.} Fitur bertahap dari perhitungan dasar hingga alat bantu cerdas.
+\end{enumerate}
+
+% ============================================================
+\chapter{Persiapan dan Akses}
+% ============================================================
+
+\section{Prasyarat Sistem}
+
+\begin{itemize}
+  \item Koneksi internet yang stabil
+  \item Browser modern: Google Chrome 90+, Mozilla Firefox 88+, Microsoft Edge 90+, atau Safari 15+
+  \item Resolusi layar minimal 1024$\times$768 piksel untuk pengalaman optimal
+\end{itemize}
+
+\section{Mengakses Aplikasi}
+
+Aplikasi berjalan di lingkungan privat, bukan \emph{software-as-a-service} publik. Akses dibatasi ke pengguna yang terdaftar.
+
+\begin{enumerate}
+  \item Buka browser dan arahkan ke alamat aplikasi (misalnya \url{https://sharia.airlangga.link})
+  \item Halaman utama (landing page) akan tampil menjelaskan fitur aplikasi
+  \item Klik tombol \textbf{Masuk} di pojok kanan atas
+  \item Masukkan alamat email dan kata sandi yang sudah didaftarkan
+  \item Klik \textbf{Masuk}
+\end{enumerate}
+
+\section{Dashboard}
+
+Setelah masuk, Anda akan melihat dasbor yang menampilkan daftar skenario pembiayaan yang sudah dibuat. Dari sini Anda dapat:
+
+\begin{itemize}
+  \item Melihat ringkasan setiap skenario: nama, sektor, status kelayakan, EAR, DSCR rata-rata, NPV
+  \item Mengklik skenario untuk melihat detail lengkap
+  \item Membuat skenario baru
+  \item Mengedit atau menghapus skenario yang sudah ada
+\end{itemize}
+
+% ============================================================
+\chapter{Membuat Skenario}
+% ============================================================
+
+Membuat skenario pembiayaan dilakukan melalui form empat langkah. Setiap langkah mengumpulkan informasi yang diperlukan untuk perhitungan kelayakan.
+
+\section{Langkah 1: Identitas}
+
+Langkah pertama mengumpulkan informasi dasar skenario.
+
+\begin{longtable}{@{}p{3.5cm}>{\raggedright\arraybackslash}p{3cm}>{\raggedright\arraybackslash}p{4.5cm}>{\raggedright\arraybackslash}p{2cm}@{}}
+\toprule
+\textbf{Field} & \textbf{Tipe} & \textbf{Validasi} & \textbf{Wajib} \\
+\midrule
+\endhead
+Nama skenario & Teks & 3--120 karakter & Ya \\
+Jenis usaha / sektor & Pilihan & Dari daftar sektor & Ya \\
+Tujuan pembiayaan & Teks & 3--200 karakter & Ya \\
+Profil risiko & Pilihan & Rendah / Sedang / Tinggi & Ya \\
+\bottomrule
+\end{longtable}
+
+Sektor usaha yang tersedia meliputi: ritel, kuliner, fashion, agribisnis, peternakan, perikanan, bengkel, konveksi, toko kelontong, kerajinan, laundry, fotokopi, pendidikan, kesehatan, properti, konstruksi, transportasi, teknologi, industri kreatif, dan lain-lain.
+
+\section{Langkah 2: Struktur Pembiayaan}
+
+Langkah kedua mengumpulkan detail struktur pembiayaan.
+
+\begin{longtable}{@{}p{3.5cm}>{\raggedright\arraybackslash}p{3cm}>{\raggedright\arraybackslash}p{4.5cm}>{\raggedright\arraybackslash}p{2cm}@{}}
+\toprule
+\textbf{Field} & \textbf{Tipe} & \textbf{Validasi} & \textbf{Wajib} \\
+\midrule
+\endhead
+Kebutuhan dana & Rupiah & Rp1 juta -- Rp500 miliar & Ya \\
+Tenor & Bulan & 3 -- 240 bulan & Ya \\
+Jenis skema & Pilihan & Syariah / Konvensional & Ya \\
+Jenis akad & Pilihan & Murabahah / Ijarah / MMQ & Kondisional \\
+Tingkat biaya tahunan & Persen & 0\% -- 60\% & Ya \\
+Basis kuotasi & Pilihan & Flat / Efektif & Ya \\
+\bottomrule
+\end{longtable}
+
+\textbf{Catatan penting:} Field \emph{basis kuotasi} membedakan apakah angka yang dimasukkan adalah tingkat biaya flat atau efektif. Nilai bawaan mengikuti praktik umum: murabahah dan ijarah $\to$ flat; musyarakah mutanaqishah dan konvensional $\to$ efektif.
+
+Singkatan: MMQ = Musyarakah Mutanaqishah.
+
+\section{Langkah 3: Kondisi Usaha}
+
+Langkah ketiga mengumpulkan informasi kondisi usaha saat ini.
+
+\begin{longtable}{@{}p{4cm}>{\raggedright\arraybackslash}p{3cm}>{\raggedright\arraybackslash}p{4cm}>{\raggedright\arraybackslash}p{2cm}@{}}
+\toprule
+\textbf{Field} & \textbf{Tipe} & \textbf{Validasi} & \textbf{Wajib} \\
+\midrule
+\endhead
+Pendapatan bulanan awal & Rupiah & $\ge$ 0 & Ya \\
+Opex bulanan awal & Rupiah & $\ge$ 0 & Ya \\
+Pertumbuhan pendapatan tahunan & Persen & $-$50\% s.d. 100\% & Ya \\
+Inflasi biaya tahunan & Persen & $-$20\% s.d. 50\% & Ya \\
+Margin kontribusi & Persen & 1\% -- 100\% & Ya \\
+Ekuitas awal & Rupiah & $>$ 0 & Ya \\
+Kewajiban lain & Rupiah & $\ge$ 0 & Ya \\
+\bottomrule
+\end{longtable}
+
+\section{Langkah 4: Dampak Pembiayaan}
+
+Langkah keempat mengumpulkan asumsi tentang dampak pembiayaan.
+
+\begin{longtable}{@{}p{4cm}>{\raggedright\arraybackslash}p{3cm}>{\raggedright\arraybackslash}p{4cm}>{\raggedright\arraybackslash}p{2cm}@{}}
+\toprule
+\textbf{Field} & \textbf{Tipe} & \textbf{Validasi} & \textbf{Wajib} \\
+\midrule
+\endhead
+Tambahan pendapatan bulanan & Rupiah & $\ge$ 0 & Ya \\
+Tambahan opex bulanan & Rupiah & $\ge$ 0 & Ya \\
+Discount rate tahunan & Persen & 0\% -- 40\% (bawaan 12\%) & Ya \\
+\bottomrule
+\end{longtable}
+
+Dua field pertama menjawab pertanyaan \emph{apa yang berubah karena pembiayaan ini}. Tanpa keduanya, NPV hanya mengukur nilai seluruh usaha yang sudah berjalan -- angka yang besar tetapi tidak bermakna. Form menampilkan penjelasan ini di samping input.
+
+% ============================================================
+\chapter{Memahami Hasil}
+% ============================================================
+
+Setelah skenario dibuat, Anda akan melihat halaman detail yang menampilkan seluruh hasil perhitungan. Halaman ini terdiri dari beberapa tab.
+
+\section{Ringkasan Eksekutif}
+
+Tab pertama menampilkan ringkasan satu halaman:
+\begin{itemize}
+  \item Kartu status kelayakan (LAYAK / WASPADA / TIDAK LAYAK) dengan warna indikator
+  \item Metrik utama: EAR, DSCR rata-rata, NPV, IRR
+  \item Informasi skema dan akad
+  \item Narasi otomatis yang merangkum hasil dalam bahasa Indonesia
+\end{itemize}
+
+\section{Arus Kas}
+
+Tab arus kas menampilkan:
+\begin{itemize}
+  \item Tabel proyeksi arus kas bulanan: pendapatan, opex, CFADS, debt service, arus kas bersih
+  \item Grafik arus kas (Recharts) untuk varian base/best/worst
+  \item Varian dapat dipilih melalui tab \emph{Base}, \emph{Best}, \emph{Worst}
+\end{itemize}
+
+\section{Metrik Kelayakan}
+
+Tab ini menampilkan seluruh metrik dalam kartu-kartu terpisah:
+
+\subsection{EAR (Effective Annual Rate)}
+
+Biaya efektif tahunan hasil normalisasi dari jadwal pembayaran aktual. Ini adalah satu-satunya angka yang boleh dipakai untuk membandingkan antar-skema. EAR diturunkan dari IRR jadwal pembayaran dengan rumus:
+
+\[
+\text{EAR} = \left( \left(1 + \frac{\text{EAR}_{\text{bulanan}}}{100}\right)^{12} - 1 \right) \times 100\%
+\]
+
+\subsection{DSCR (Debt Service Coverage Ratio)}
+
+\[
+\text{DSCR}_t = \frac{\text{CFADS}_t}{D_t}
+\]
+
+DSCR mengukur kemampuan usaha membayar kewajiban pembiayaan pada bulan $t$.
+\begin{itemize}
+  \item DSCR $\ge$ 1,25: aman
+  \item DSCR 1,00 -- 1,24: perlu perhatian
+  \item DSCR $<$ 1,00: tidak aman
+\end{itemize}
+
+\subsection{NPV (Net Present Value)}
+
+\[
+\text{NPV} = \sum_{t=1}^{n} \frac{\Delta \text{CF}_t}{(1 + r_d)^{t/12}} - \text{Dana}
+\]
+
+Semua arus kas inkremental didiskontokan dengan discount rate $r_d$. NPV $>$ 0 berarti proyek layak secara finansial.
+
+\subsection{IRR (Internal Rate of Return)}
+
+IRR adalah tingkat diskonto yang membuat NPV = 0. Dihitung dengan metode Newton-Raphson dengan fallback bisection pada rentang $[$-99\%, 10\%$]$. IRR $>$ discount rate menandakan kelayakan.
+
+\subsection{DER (Debt to Equity Ratio)}
+
+\[
+\text{DER} = \frac{\text{Kebutuhan dana} + \text{Kewajiban lain}}{\text{Ekuitas awal}}
+\]
+
+DER $\le$ 2,0 dianggap aman; $>$ 3,0 menandakan risiko tinggi.
+
+\subsection{ROI Tahunan}
+
+\[
+\text{ROI tahunan} = \frac{\text{Total arus kas inkremental} - \text{Total imbalan}}{\text{Ekuitas awal} \times \text{Lama (tahun)}}
+\]
+
+Mengukur imbal hasil tahunan atas ekuitas yang disetor.
+
+\subsection{BEP (Break-Even Point)}
+
+\[
+\text{BEP (Rp)} = \frac{\text{Biaya tetap}}{\text{Margin kontribusi (\%)}}
+\]
+
+Omzet minimal yang harus dicapai setiap bulan agar usaha tidak merugi.
+
+\section{Panel Formula}
+
+Setiap kartu metrik menyertakan panel \textbf{Bagaimana ini dihitung} yang menampilkan:
+\begin{itemize}
+  \item Rumus metrik
+  \item Nilai setiap variabel dalam rumus
+  \item Hasil perhitungan antara
+\end{itemize}
+
+% ============================================================
+\chapter{Fitur Lanjutan}
+% ============================================================
+
+\section{Analisis Sensitivitas}
+
+Fitur ini menguji seberapa sensitif hasil terhadap perubahan asumsi. Untuk tiap parameter, sistem menghitung dampak perubahan $\pm$10\% dan $\pm$20\% dari nilai dasar terhadap NPV, IRR, dan DSCR.
+
+Hasil ditampilkan dalam \textbf{tornado chart}: parameter yang paling memengaruhi hasil ditampilkan di bagian atas, sehingga Anda bisa langsung melihat asumsi mana yang paling kritis.
+
+Cara menggunakan:
+\begin{enumerate}
+  \item Buka halaman detail skenario
+  \item Klik tombol \textbf{Analisis Sensitivitas}
+  \item Amati tornado chart -- parameter dengan batang terpanjang adalah asumsi paling kritis
+\end{enumerate}
+
+\section{Perbandingan Antar-Skenario}
+
+Fitur ini membandingkan dua skenario atau lebih secara berdampingan. Anda bisa membandingkan:
+\begin{itemize}
+  \item EAR kedua skenario
+  \item Angsuran per bulan
+  \item DSCR rata-rata dan minimum
+  \item NPV dan IRR
+  \item DER dan ROI
+\end{itemize}
+
+Cara menggunakan:
+\begin{enumerate}
+  \item Buka halaman \textbf{Bandingkan Skenario} dari menu navigasi
+  \item Pilih dua skenario atau lebih yang ingin dibandingkan
+  \item Sistem akan menyorot skenario dengan kinerja lebih baik per metrik
+  \item Baca rekomendasi otomatis di bagian bawah halaman
+\end{enumerate}
+
+\section{Simulasi Monte Carlo}
+
+Simulasi Monte Carlo menjalankan ribuan iterasi dengan variasi acak pada asumsi utama, menghasilkan distribusi probabilitas untuk NPV dan DSCR. Fitur ini memberikan gambaran rentang kemungkinan hasil, bukan hanya satu angka titik.
+
+Hasil ditampilkan dalam bentuk:
+\begin{itemize}
+  \item Histogram distribusi NPV
+  \item Histogram distribusi DSCR
+  \item Probabilitas kelayakan (persentase iterasi dengan NPV $>$ 0 dan DSCR $\ge$ 1,00)
+\end{itemize}
+
+\section{Deteksi Anomali}
+
+Sistem secara otomatis membandingkan setiap skenario dengan skenario lain di sektor yang sama. Jika ditemukan nilai yang menyimpang secara signifikan dari median sektor, sistem akan menandainya sebagai anomali.
+
+Parameter yang diperiksa:
+\begin{itemize}
+  \item EAR -- apakah wajar untuk jenis akad dan sektor ini?
+  \item DSCR rata-rata -- apakah terlalu tinggi atau rendah untuk sektor serupa?
+  \item Status kelayakan -- apakah konsisten dengan profil risiko?
+\end{itemize}
+
+\section{Optimizer Struktur Pembiayaan}
+
+Fitur ini membantu menemukan struktur pembiayaan terbaik dengan cara mengoptimalkan tenor, skema, dan akad berdasarkan kriteria yang Anda pilih. Optimizer akan menyarankan kombinasi parameter yang meminimalkan biaya atau memaksimalkan kelayakan.
+
+% ============================================================
+\chapter{Alat Bantu Analisis}
+% ============================================================
+
+\section{Ekstraksi Dokumen}
+
+Fitur ini membantu mengurai teks pengajuan pembiayaan menjadi field skenario yang siap dihitung. Cukup tempelkan deskripsi pengajuan, dan sistem akan mengekstrak informasi seperti kebutuhan dana, tenor, sektor usaha, dan proyeksi keuangan.
+
+Cara menggunakan:
+\begin{enumerate}
+  \item Buka halaman detail skenario
+  \item Pilih tab \textbf{Ekstraksi}
+  \item Tempelkan teks pengajuan atau ringkasan usaha
+  \item Klik \textbf{Ekstrak} -- sistem akan mengisi field skenario secara otomatis
+  \item Periksa dan sesuaikan hasil ekstraksi sebelum menyimpan
+\end{enumerate}
+
+\section{Narasi Otomatis}
+
+Setiap skenario dilengkapi ringkasan naratif dalam bahasa Indonesia yang ditulis dengan gaya konsultan keuangan. Narasi mencakup:
+\begin{itemize}
+  \item Profil pembiayaan: jenis akad, jumlah dana, tenor
+  \item Analisis kelayakan: metrik utama dan interpretasinya
+  \item Rekomendasi: langkah yang bisa dipertimbangkan
+\end{itemize}
+
+Narasi dapat disalin ke papan klip untuk dimasukkan ke dalam laporan.
+
+\section{Copilot}
+
+Copilot adalah fitur tanya-jawab interaktif tentang skenario-skenario Anda. Anda bisa bertanya dalam bahasa Indonesia sehari-hari, misalnya:
+
+\begin{itemize}
+  \item \emph{Bagaimana perbandingan skenario warung kopi saya dengan konveksi?}
+  \item \emph{Apa risiko terbesar dari skenario peternakan ayam?}
+  \item \emph{Skenario mana yang paling layak?}
+  \item \emph{Mengapa DSCR skenario ini rendah?}
+\end{itemize}
+
+Copilot akan menjawab dengan data aktual dari skenario Anda, lengkap dengan angka dan perbandingan.
+
+\section{Pemeriksaan Kepatuhan Syariah}
+
+Fitur ini memeriksa struktur pembiayaan terhadap prinsip syariah:
+\begin{itemize}
+  \item Kesesuaian akad dengan basis kuotasi (murabahah $\to$ flat, MMQ $\to$ efektif)
+  \item Deteksi indikasi riba dalam struktur pembiayaan
+  \item Checklist konfirmasi untuk Dewan Pengawas Syariah (DPS)
+  \item Analisis mendalam dengan rekomendasi perbaikan
+\end{itemize}
+
+Cara menggunakan:
+\begin{enumerate}
+  \item Buka halaman \textbf{Cek Kepatuhan Syariah} dari menu navigasi
+  \item Pilih atau isi struktur pembiayaan yang akan diperiksa
+  \item Sistem akan menampilkan hasil pemeriksaan per item
+  \item Gunakan checklist DPS untuk dokumentasi
+\end{enumerate}
+
+\section{Laporan PDF}
+
+Setiap skenario dapat diekspor menjadi laporan PDF profesional. Laporan mencakup:
+\begin{enumerate}
+  \item Halaman judul dengan informasi skenario
+  \item Ringkasan eksekutif naratif
+  \item Profil skenario (tabel identitas)
+  \item Struktur pembiayaan (tabel skema, akad, dana, tenor)
+  \item Indikator kelayakan (tabel metrik dengan warna status)
+  \item Grafik arus kas
+  \item Analisis sensitivitas (tornado chart)
+  \item Perbandingan (jika ada skenario pembanding)
+  \item Simpulan dan rekomendasi
+  \item Disclaimer batasan model
+\end{enumerate}
+
+Cara menggunakan:
+\begin{enumerate}
+  \item Buka halaman detail skenario
+  \item Klik tombol \textbf{Laporan PDF}
+  \item Laporan akan dihasilkan dan ditampilkan di tab baru
+  \item Gunakan fungsi cetak browser untuk menyimpan sebagai PDF
+\end{enumerate}
+
+% ============================================================
+\chapter{Interpretasi Hasil}
+% ============================================================
+
+\section{Status Kelayakan}
+
+Status kelayakan skenario ditentukan dari varian \emph{base} dengan aturan berikut:
+
+\begin{itemize}
+  \item \textbf{LAYAK} -- DSCR rata-rata $\ge$ 1,25 \textbf{dan} DSCR minimum $\ge$ 1,00 \textbf{dan} NPV $>$ 0
+  \item \textbf{WASPADA} -- DSCR rata-rata $\ge$ 1,00 tetapi salah satu syarat lain tidak terpenuhi
+  \item \textbf{TIDAK LAYAK} -- DSCR rata-rata $<$ 1,00
+\end{itemize}
+
+\section{Tabel Ambang Batas}
+
+\begin{longtable}{@{}p{3.5cm}>{\raggedright\arraybackslash}p{3.5cm}>{\raggedright\arraybackslash}p{3.5cm}>{\raggedright\arraybackslash}p{3.5cm}@{}}
+\toprule
+\textbf{Metrik} & \textbf{Aman} & \textbf{Perlu Perhatian} & \textbf{Tidak Aman} \\
+\midrule
+\endhead
+DSCR per periode & $\ge$ 1,25 & 1,00 -- 1,24 & $<$ 1,00 \\
+NPV & $>$ 0 & -- & $\le$ 0 \\
+IRR & $>$ discount rate & $\pm$2 pp dari dr & $<$ discount rate \\
+DER & $\le$ 2,0 & 2,01 -- 3,00 & $>$ 3,00 \\
+\bottomrule
+\end{longtable}
+
+\section{Varian Skenario}
+
+Setiap skenario dihitung dalam tiga varian:
+
+\begin{longtable}{@{}p{2cm}>{\raggedright\arraybackslash}p{3cm}>{\raggedright\arraybackslash}p{3cm}p{5cm}@{}}
+\toprule
+\textbf{Varian} & \textbf{Pengali Pendapatan} & \textbf{Pengali Opex} & \textbf{Tafsir} \\
+\midrule
+\endhead
+Base & 1,00 & 1,00 & Asumsi apa adanya dari pengguna \\
+Best & 1,08 & 0,97 & Penjualan di atas rencana, efisiensi biaya \\
+Worst & 0,90 & 1,05 & Penjualan meleset 10\%, biaya membengkak 5\% \\
+\bottomrule
+\end{longtable}
+
+Angka ini sengaja konservatif dan simetris agar mudah dijelaskan. Jadwal pembiayaan tidak ikut berubah antar varian, mencerminkan bahwa kewajiban ke pemberi dana bersifat tetap.
+
+% ============================================================
+\chapter{Pengelolaan Data}
+% ============================================================
+
+\section{Data Uji Bawaan}
+
+Aplikasi dilengkapi 20 skenario bawaan yang mencakup berbagai sektor UKM Indonesia. Data ini berguna untuk:
+\begin{itemize}
+  \item Memahami cara kerja aplikasi tanpa harus mengisi data dari awal
+  \item Kalibrasi dan deteksi anomali
+  \item Referensi untuk perbandingan
+\end{itemize}
+
+Sektor yang tercakup dalam data uji: kuliner, konveksi, peternakan, agribisnis, toko kelontong, bengkel, perikanan, fashion, laundry, fotokopi, kedai kopi, kerajinan, dan lain-lain.
+
+\section{Cadangan dan Pemulihan}
+
+Data disimpan di database PostgreSQL. Untuk pencadangan rutin, gunakan perintah:
+
+\begin{quote}
+\verb|pg_dump -U shariauser -d sharia_db > cadangan-$(date +%Y%m%d).sql|
+\end{quote}
+
+Untuk memulihkan dari cadangan:
+
+\begin{quote}
+\verb|psql -U shariauser -d sharia_db < cadangan.sql|
+\end{quote}
+
+% ============================================================
+\chapter{Batasan Model}
+\label{chap:batasan}
+% ============================================================
+
+Model ini menyederhanakan kenyataan. Batasan berikut dinyatakan secara terbuka agar hasil tidak dibaca melebihi kemampuannya.
+
+\begin{enumerate}
+  \item \textbf{Tanpa nilai residu.} Valuasi berhenti di akhir tenor; aset yang masih produktif setelahnya tidak dihitung. NPV cenderung \emph{understated}, terutama pada tenor pendek dengan aset berumur panjang.
+  \item \textbf{Tanpa pajak.} Seluruh arus kas dihitung sebelum pajak penghasilan badan.
+  \item \textbf{Tanpa modal kerja bergulir.} Perubahan piutang, persediaan, dan utang usaha tidak dimodelkan.
+  \item \textbf{Pertumbuhan deterministik dan mulus.} Pendapatan tumbuh secara majemuk bulanan tanpa musiman. Untuk usaha dengan siklus panen atau musim ramai, ini penyederhanaan yang cukup besar.
+  \item \textbf{Tanpa risiko gagal bayar.} Model mengasumsikan seluruh angsuran dibayar tepat waktu; tidak ada denda, restrukturisasi, atau \emph{grace period}.
+  \item \textbf{EAR mengabaikan biaya di luar jadwal angsuran.} Biaya administrasi, asuransi/takaful, notaris, dan provisi tidak diperhitungkan.
+  \item \textbf{Musyarakah mutanaqishah disederhanakan} menjadi pokok lurus ditambah imbal hasil atas sisa porsi kepemilikan bank.
+\end{enumerate}
+
+% ============================================================
+\chapter{Pemecahan Masalah}
+% ============================================================
+
+\section{Metrik Menampilkan "--"}
+
+Beberapa metrik mungkin menampilkan tanda "--" alih-alih angka. Ini adalah perilaku yang dirancang, bukan kesalahan. Penyebabnya antara lain:
+\begin{itemize}
+  \item \textbf{DSCR tidak terdefinisi:} debt service = 0 (tingkat biaya 0\% dan pokok 0)
+  \item \textbf{IRR tidak terdefinisi:} seluruh arus kas inkremental negatif
+  \item \textbf{DER tidak terdefinisi:} ekuitas awal = 0
+\end{itemize}
+
+\section{Status "TIDAK LAYAK" untuk Skenario Baru}
+
+Jika skenario baru langsung berstatus TIDAK LAYAK, periksa:
+\begin{enumerate}
+  \item Apakah DSCR rata-rata di bawah 1,00? -- Mungkin pendapatan terlalu rendah atau angsuran terlalu tinggi.
+  \item Apakah NPV negatif? -- Mungkin discount rate terlalu tinggi atau arus kas inkremental terlalu kecil.
+  \item Apakah tenor terlalu pendek untuk kebutuhan dana tersebut?
+\end{enumerate}
+
+\section{Halaman Tidak Termuat}
+
+Jika halaman tidak termuat dengan benar:
+\begin{enumerate}
+  \item Periksa koneksi internet
+  \item Coba segarkan halaman (F5 atau Ctrl+R)
+  \item Hapus cache browser dan coba lagi
+  \item Jika masih bermasalah, hubungi administrator
+\end{enumerate}
+
+% ============================================================
+\chapter{Referensi Teknis}
+% ============================================================
+
+\section{Rumus Perhitungan}
+
+\subsection{Jadwal Pembiayaan --- Anuitas}
+
+\begin{align*}
+  A &= P \times \frac{r(1+r)^n}{(1+r)^n - 1} \\
+ \\
+ \text{dengan:}\quad A &= \text{angsuran per bulan} \\
+ P &= \text{kebutuhan dana} \\
+ r &= \text{tingkat biaya bulanan} = \frac{\text{tingkat tahunan}}{12} \\
+ n &= \text{tenor dalam bulan}
+\end{align*}
+
+\subsection{Jadwal Pembiayaan --- Flat}
+
+\begin{align*}
+  A &= \frac{P + (P \times r_f \times n/12)}{n} \\
+ \\
+ \text{dengan:}\quad r_f &= \text{tingkat biaya flat tahunan}
+\end{align*}
+
+\subsection{Jadwal Pembiayaan --- Musyarakah Mutanaqishah}
+
+\begin{align*}
+  A_t &= \frac{P}{n} + \left(P - \frac{P(t-1)}{n}\right) \times r_e \\
+ \\
+ \text{dengan:}\quad r_e &= \text{tingkat biaya efektif bulanan}
+\end{align*}
+
+\subsection{Normalisasi EAR}
+
+\begin{align*}
+  \text{EAR} &= \left((1 + r_b)^{12} - 1\right) \times 100\% \\
+ \\
+ \text{dengan:}\quad r_b &= \text{EAR bulanan yang diturunkan dari IRR jadwal pembayaran}
+\end{align*}
+
+\subsection{EAR dari Jadwal Pembayaran}
+
+\begin{align*}
+  \text{EAR} &= \left((1 + \text{EAR}_{\text{bulanan}})^{12} - 1\right) \times 100\%
+\end{align*}
+
+di mana EAR bulanan adalah $r$ yang memenuhi:
+
+\begin{align*}
+  P &= \sum_{t=1}^{n} \frac{A_t}{(1+r)^t}
+\end{align*}
+
+\subsection{Arus Kas}
+
+\begin{align*}
+  \text{CFADS}_t &= \text{Pendapatan}_t - \text{Opex}_t - \text{Capex}_t \\
+  \text{Arus kas bersih}_t &= \text{CFADS}_t - D_t \\
+  \Delta\text{CF}_t &= \Delta\text{Pendapatan}_t - \Delta\text{Opex}_t
+\end{align*}
+
+\subsection{BEP (Break-Even Point)}
+
+\begin{align*}
+  \text{BEP (Rp)} &= \frac{\text{Biaya tetap}}{\text{Margin kontribusi (\%)}} \\
+  \\
+  \text{Biaya tetap} &= \text{Opex} - (1 - \text{Margin kontribusi}) \times \text{Pendapatan}
+\end{align*}
+
+\section{Skema Database}
+
+Berikut adalah tabel-tabel utama dalam basis data:
+
+\begin{longtable}{@{}p{3cm}>{\raggedright\arraybackslash}p{10cm}@{}}
+\toprule
+\textbf{Tabel} & \textbf{Deskripsi} \\
+\midrule
+\endhead
+user & Data pengguna (dari Better Auth boilerplate) \\
+session & Sesi autentikasi \\
+account & Akun autentikasi \\
+verification & Token verifikasi \\
+scenarios & Data input skenario: identitas, struktur, kondisi usaha, valuasi \\
+scenario\_results & Hasil perhitungan per skenario: metrik dan ringkasan \\
+sensitivity\_results & Hasil analisis sensitivitas per parameter \\
+monte\_carlo\_results & Hasil simulasi Monte Carlo: distribusi dan probabilitas \\
+sharia\_checks & Hasil pemeriksaan kepatuhan syariah \\
+\bottomrule
+\end{longtable}
+
+% ============================================================
+\appendix
+\chapter{Glosarium}
+% ============================================================
+
+\section*{A. Istilah Pembiayaan}
+
+\begin{description}[style=unboxed,leftmargin=2.5cm]
+  \item[Akad] Perjanjian atau kontrak dalam hukum Islam yang mendasari transaksi pembiayaan syariah.
+  \item[Anuitas] Metode pembayaran dengan angsuran tetap setiap periode; porsi pokok bertambah, porsi bunga/imbalan berkurang seiring waktu.
+  \item[Basis kuotasi] Cara menyatakan tingkat biaya: \emph{flat} (atas pokok awal) atau \emph{efektif} (atas saldo menurun).
+  \item[Debt service] Total kewajiban ke pemberi dana pada satu periode (pokok + margin/bunga/ujrah).
+  \item[DSCR] \emph{Debt Service Coverage Ratio} -- rasio kemampuan membayar kewajiban dari arus kas usaha.
+  \item[DPS] Dewan Pengawas Syariah -- lembaga yang mengawasi kepatuhan terhadap prinsip syariah.
+  \item[EAR] \emph{Effective Annual Rate} -- biaya efektif tahunan hasil normalisasi dari jadwal pembayaran aktual.
+\end{description}
+
+\section*{B. Metrik Keuangan}
+
+\begin{description}[style=unboxed,leftmargin=2.5cm]
+  \item[CFADS] \emph{Cash Flow Available for Debt Service} -- arus kas usaha sebelum pembayaran pembiayaan.
+  \item[DER] \emph{Debt to Equity Ratio} -- rasio total utang terhadap ekuitas.
+  \item[IRR] \emph{Internal Rate of Return} -- tingkat diskonto yang membuat NPV = 0.
+  \item[NPV] \emph{Net Present Value} -- nilai sekarang bersih dari arus kas masa depan.
+  \item[ROI] \emph{Return on Investment} -- imbal hasil tahunan atas ekuitas.
+  \item[BEP] \emph{Break-Even Point} -- titik impas: omzet minimal agar tidak merugi.
+\end{description}
+
+\section*{C. Akad Syariah}
+
+\begin{description}[style=unboxed,leftmargin=2.5cm]
+  \item[Murabahah] Jual beli dengan harga pokok ditambah margin yang disepakati; pembayaran bisa diangsur.
+  \item[Ijarah] Sewa-menyewa; bank membeli aset dan menyewakannya kepada nasabah dengan ujrah (biaya sewa) tetap.
+  \item[Musyarakah Mutanaqishah] Kemitraan dengan porsi kepemilikan bank yang menurun secara bertahap; nasabah membeli porsi bank setiap periode.
+  \item[Riba] Tambahan atau bunga yang dilarang dalam syariah; deteksi otomatis dilakukan pada fitur kepatuhan.
+\end{description}
+
+\section*{D. Varian dan Skenario}
+
+\begin{description}[style=unboxed,leftmargin=2.5cm]
+  \item[Skenario] Satu set asumsi pembiayaan lengkap yang menghasilkan satu perhitungan kelayakan.
+  \item[Varian base] Skenario dengan asumsi apa adanya dari pengguna (pengali = 1,0).
+  \item[Varian best] Skenario dengan asumsi optimistis (pendapatan +8\%, opex --3\%).
+  \item[Varian worst] Skenario dengan asumsi pesimistis (pendapatan --10\%, opex +5\%).
+\end{description}
+
+\section*{E. Fitur Aplikasi}
+
+\begin{description}[style=unboxed,leftmargin=2.5cm]
+  \item[Copilot] Fitur tanya-jawab interaktif berbasis skenario yang tersimpan.
+  \item[Ekstraksi dokumen] Fitur mengurai teks pengajuan menjadi field skenario.
+  \item[Narasi otomatis] Ringkasan naratif hasil perhitungan dalam bahasa Indonesia.
+  \item[Sensitivitas] Analisis dampak perubahan asumsi terhadap metrik kelayakan.
+  \item[Monte Carlo] Simulasi probabilistik dengan variasi acak pada asumsi.
+  \item[Optimizer] Pencarian struktur pembiayaan optimal berdasarkan kriteria.
+\end{description}
+
+\section*{F. Istilah Teknis}
+
+\begin{description}[style=unboxed,leftmargin=2.5cm]
+  \item[Server Action] Fungsi sisi server Next.js yang dipanggil langsung dari komponen.
+  \item[Drizzle ORM] \emph{Object-Relational Mapping} untuk TypeScript/JavaScript.
+  \item[Better Auth] Pustaka autentikasi untuk Next.js dengan dukungan sesi dan email/password.
+  \item[Recharts] Pustaka grafik untuk React berbasis D3.
+  \item[Zod] Pustaka validasi skema berbasis TypeScript.
+\end{description}
+
+\section*{G. Singkatan dan Akronim}
+
+\begin{longtable}{@{}p{3cm}>{\raggedright\arraybackslash}p{11cm}@{}}
+\toprule
+\textbf{Singkatan} & \textbf{Kepanjangan} \\
+\midrule
+\endhead
+BEP & Break-Even Point \\
+CFADS & Cash Flow Available for Debt Service \\
+DER & Debt to Equity Ratio \\
+DPS & Dewan Pengawas Syariah \\
+DSCR & Debt Service Coverage Ratio \\
+EAR & Effective Annual Rate \\
+IRR & Internal Rate of Return \\
+MMQ & Musyarakah Mutanaqishah \\
+NPV & Net Present Value \\
+ROI & Return on Investment \\
+UKM & Usaha Kecil dan Menengah \\
+\bottomrule
+\end{longtable}
+
+\end{document}

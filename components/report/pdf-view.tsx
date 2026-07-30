@@ -36,9 +36,9 @@ export default function PdfView({ data }: { data: ReportData }) {
         <ReportDocument data={data} />
       </PDFViewer>
       <p className="text-xs text-slate">
-        Dokumen dibuat di peramban Anda. Gunakan tombol unduh, atau ikon
-        cetak/simpan pada penampil di atas. Ringkasan naratif bersumber dari
-        template perhitungan{data.narrativeSource === "ai" ? " (diperdalam AI)" : ""}.
+        Dokumen disusun di peramban Anda. Gunakan tombol unduh, atau ikon cetak
+        dan simpan pada penampil di atas. Ringkasan naratifnya menyusun ulang
+        hasil hitung ke dalam kalimat yang mudah dibaca.
       </p>
     </div>
   );

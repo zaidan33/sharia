@@ -69,9 +69,8 @@ export function NarrativePanel({ narrative }: { narrative: NarrativeResult }) {
       </Card>
 
       <p className="text-xs text-slate">
-        {narrative.source === "ai"
-          ? "Analisis mendalam dibuat AI; angka tetap berasal dari hasil hitung mesin. Angka mengikuti asumsi skenario - bukan jaminan hasil."
-          : "Narasi dibuat dari template berbasis hasil hitung, bukan dari model bahasa. Angka mengikuti asumsi skenario - bukan jaminan hasil."}
+        Narasi disusun dari hasil hitung dan dituliskan dalam kalimat yang lebih
+        utuh. Angka mengikuti asumsi skenario - bukan jaminan hasil.
       </p>
     </div>
   );

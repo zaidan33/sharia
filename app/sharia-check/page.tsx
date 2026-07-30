@@ -25,9 +25,10 @@ export default async function ShariaCheckPage() {
           Cek kepatuhan syariah
         </h1>
         <p className="text-sm text-slate">
-          Pemeriksaan rule-based atas struktur pembiayaan: kesesuaian akad &amp;
-          basis, deteksi riba (EAR &gt; 20%), dan checklist konfirmasi Dewan
-          Pengawas Syariah. Simulasi - bukan fatwa resmi.
+          Kami memeriksa struktur pembiayaan dari sisi syariah: kesesuaian akad
+          dan basis perhitungan, penandaan indikasi riba saat EAR di atas 20%,
+          serta checklist untuk konfirmasi Dewan Pengawas Syariah. Ini bantuan
+          analisis, bukan fatwa resmi.
         </p>
       </div>
       <ShariaCheckPanel scenarios={scenarios} />

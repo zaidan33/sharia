@@ -5,12 +5,12 @@ const FEATURES = [
   {
     icon: Scale,
     title: "Perbandingan adil antar-skema",
-    body: "Margin murabahah, ujrah ijarah, bunga anuitas, dan bagi hasil dinormalisasi ke satu Effective Annual Rate dari jadwal pembayaran aktual.",
+    body: "Margin murabahah, ujrah ijarah, bunga anuitas, dan bagi hasil dinormalisasi ke satu Effective Annual Rate dari jadwal pembayaran yang sebenarnya, jadi bisa dibandingkan apa adanya.",
   },
   {
     icon: Calculator,
     title: "Valuasi transparan",
-    body: "NPV dan IRR dihitung atas arus kas inkremental. Setiap angka membuka rumus dan nilai masukannya untuk diaudit, bukan dipercaya begitu saja.",
+    body: "NPV dan IRR dihitung atas tambahan arus kas akibat pembiayaan. Tiap angka membuka rumus dan nilai masukannya untuk diaudit, bukan dipercaya begitu saja.",
   },
   {
     icon: Activity,
@@ -20,7 +20,7 @@ const FEATURES = [
   {
     icon: ShieldCheck,
     title: "Kepatuhan syariah",
-    body: "Pemeriksaan kesesuaian akad dan basis, deteksi riba, serta checklist konfirmasi Dewan Pengawas Syariah (DPS).",
+    body: "Pemeriksaan kesesuaian akad dan basis, penandaan indikasi riba, serta checklist konfirmasi Dewan Pengawas Syariah.",
   },
 ];
 
@@ -33,8 +33,8 @@ export function FeaturesSection() {
             Satu kerangka kerja, analisis menyeluruh
           </h2>
           <p className="mt-3 max-w-2xl text-base text-slate">
-            Dari perhitungan dasar hingga alat bantu cerdas - semua dalam satu
-            tempat, dengan basis perhitungan yang konsisten.
+            Mulai dari hitungan dasar sampai alat bantu yang mempercepat kerja -
+            semua di satu tempat, dengan dasar perhitungan yang konsisten.
           </p>
         </Reveal>
         <div className="mt-10 grid gap-5 sm:grid-cols-2">

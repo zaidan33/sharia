@@ -9,8 +9,8 @@ export function SiteFooter() {
             Kelayakan Pembiayaan
           </span>
           <p className="max-w-xs text-xs leading-relaxed text-slate">
-            Alat analisis kelayakan pembiayaan syariah dan konvensional dalam
-            satu kerangka kerja yang transparan.
+            Tempat menghitung dan membandingkan kelayakan pembiayaan syariah dan
+            konvensional secara transparan.
           </p>
         </div>
 
@@ -40,8 +40,8 @@ export function SiteFooter() {
       <div className="border-t border-border">
         <div className="mx-auto max-w-6xl px-4 py-5">
           <p className="text-xs text-slate">
-            Hasil adalah estimasi berbasis model, bukan saran keuangan atau
-            fatwa resmi. Verifikasi asumsi sebelum mengambil keputusan.
+            Hasilnya estimasi berbasis model, bukan saran keuangan atau fatwa
+            resmi. Periksa asumsinya sebelum memutuskan.
           </p>
         </div>
       </div>

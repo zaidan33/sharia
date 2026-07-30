@@ -1,10 +1,10 @@
 import { Reveal } from "@/components/landing/reveal";
 
 const STATS = [
-  { value: "8", label: "Indikator kelayakan (EAR, DSCR, NPV, IRR, DER, ROI, BEP, status)" },
-  { value: "20", label: "Kasus acuan lintas sektor untuk kalibrasi & deteksi anomali" },
+  { value: "8", label: "Indikator kelayakan: EAR, DSCR, NPV, IRR, DER, ROI, BEP, dan status" },
+  { value: "20", label: "Kasus acuan lintas sektor untuk kalibrasi dan deteksi anomali" },
   { value: "5", label: "Alat bantu: ekstraksi, narasi, copilot, optimasi, cek kepatuhan syariah" },
-  { value: "100%", label: "Rumus dapat ditelusuri balik ke asumsi masukannya" },
+  { value: "100%", label: "Rumus bisa ditelusuri balik ke asumsi masukannya" },
 ];
 
 export function StatsSection() {
