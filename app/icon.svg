@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+  <!-- Balance scale icon for financing analysis -->
+  <rect width="32" height="32" rx="6" fill="#0B4F4A"/>
+  <!-- Scale beam -->
+  <line x1="4" y1="12" x2="28" y2="12" stroke="#FAF7EF" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Center pivot -->
+  <polygon points="16,12 14,18 18,18" fill="#C1892E"/>
+  <!-- Left pan -->
+  <path d="M8 12 Q4 16 6 20" stroke="#FAF7EF" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <line x1="4" y1="20" x2="8" y2="20" stroke="#FAF7EF" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Right pan -->
+  <path d="M24 12 Q28 16 26 20" stroke="#FAF7EF" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <line x1="24" y1="20" x2="28" y2="20" stroke="#FAF7EF" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Coin on left pan -->
+  <circle cx="6" cy="17" r="1.5" fill="#C1892E"/>
+  <!-- Arrow up on right pan -->
+  <path d="M26 14 L26 10 M24 12 L26 10 L28 12" stroke="#C1892E" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
